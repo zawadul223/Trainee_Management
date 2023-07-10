@@ -25,7 +25,7 @@ public class TraineeEntity {
     private String traineePhoto;
     private String gender;
     private Date dateOfBirth;
-    private String email;
+    private String traineeEmail;
     private String traineeContactNo;
     private String degree;
     private Double cgpa;
