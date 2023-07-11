@@ -14,10 +14,12 @@ import java.sql.Date;
 public class TrainerModel {
     private Integer trainerId;
     private String name;
+    private String trainerEmail;
     private String trainerPhoto;
     private String designation;
     private Date joiningDate;
     private Double experience;
     private String expertise;
     private String trainerContactNo;
+    private String password;
 }

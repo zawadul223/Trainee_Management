@@ -19,6 +19,7 @@ public class TrainerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer trainerId;
     private String name;
+    private String trainerEmail;
     private String trainerPhoto;
     private String designation;
     private Date joiningDate;
@@ -29,4 +30,5 @@ public class TrainerEntity {
     @OneToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
 }

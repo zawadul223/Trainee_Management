@@ -17,10 +17,11 @@ public class TraineeModel {
     private String traineePhoto;
     private String gender;
     private Date dateOfBirth;
-    private String email;
+    private String traineeEmail;
     private String traineeContactNo;
     private String degree;
     private Double cgpa;
     private Integer passingYear;
     private String address;
+    private String password;
 }

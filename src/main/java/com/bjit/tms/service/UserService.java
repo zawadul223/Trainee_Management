@@ -11,13 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UserService {
 
-    ResponseEntity<Object> traineeRegister();
-
     ResponseEntity<Object> traineeRegister(TraineeModel traineeModel);
-
-    ResponseEntity<Object> trainerRegister();
+    ResponseEntity<Object> trainerRegister(TrainerModel trainerModel);
     AuthenticationResponse login(AuthenticationRequest authenticationRequest);
     UserEntity findByEmail(String email);
 
-    ResponseEntity<Object> trainerRegister(TrainerModel trainerModel);
+
 }

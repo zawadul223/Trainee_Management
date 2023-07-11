@@ -1,5 +1,6 @@
 package com.bjit.tms.service.implementation;
 
+import com.bjit.tms.entity.Role;
 import com.bjit.tms.entity.TraineeEntity;
 import com.bjit.tms.entity.TrainerEntity;
 import com.bjit.tms.entity.UserEntity;
@@ -32,34 +33,54 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<Object> traineeRegister(TraineeModel traineeModel){
+
+        UserEntity userEntity = UserEntity.builder()
+                .email(traineeModel.getTraineeEmail())
+                .password(passwordEncoder.encode(traineeModel.getPassword()))
+                .role(Role.TRAINEE)
+                .build();
+        userRepository.save(userEntity);
+
         TraineeEntity traineeEntity = TraineeEntity.builder()
                 .name(traineeModel.getName())
                 .traineePhoto(traineeModel.getTraineePhoto())
                 .gender(traineeModel.getGender())
                 .dateOfBirth(traineeModel.getDateOfBirth())
-                .traineeEmail(traineeModel.getEmail())
+                .traineeEmail(traineeModel.getTraineeEmail())
                 .traineeContactNo(traineeModel.getTraineeContactNo())
                 .degree(traineeModel.getDegree())
                 .cgpa(traineeModel.getCgpa())
                 .passingYear(traineeModel.getPassingYear())
                 .address(traineeModel.getAddress())
+                .user(userRepository.findIdByEmail(traineeModel.getTraineeEmail()))
                 .build();
 
         traineeRepository.save(traineeEntity);
+
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<Object> trainerRegister(TrainerModel trainerModel){
+
+        UserEntity userEntity = UserEntity.builder()
+                .email(trainerModel.getTrainerEmail())
+                .password(passwordEncoder.encode(trainerModel.getPassword()))
+                .role(Role.TRAINER)
+                .build();
+        userRepository.save(userEntity);
+
         TrainerEntity trainerEntity = TrainerEntity.builder()
                 .name(trainerModel.getName())
+                .trainerEmail(trainerModel.getTrainerEmail())
                 .trainerPhoto(trainerModel.getTrainerPhoto())
                 .designation(trainerModel.getDesignation())
                 .joiningDate(trainerModel.getJoiningDate())
                 .experience(trainerModel.getExperience())
                 .expertise(trainerModel.getExpertise())
                 .trainerContactNo(trainerModel.getTrainerContactNo())
+                .user(userRepository.findIdByEmail(trainerModel.getTrainerEmail()))
                 .build();
 
         trainerRepository.save(trainerEntity);
