@@ -1,10 +1,12 @@
 package com.bjit.tms.service.implementation;
 
 import com.bjit.tms.entity.BatchEntity;
+import com.bjit.tms.entity.ClassroomEntity;
 import com.bjit.tms.entity.TraineeEntity;
 import com.bjit.tms.entity.TrainerEntity;
 import com.bjit.tms.model.BatchCreateModel;
 import com.bjit.tms.repository.BatchRepository;
+import com.bjit.tms.repository.ClassroomRepository;
 import com.bjit.tms.repository.TraineeRepository;
 import com.bjit.tms.repository.TrainerRepository;
 import com.bjit.tms.service.BatchService;
@@ -23,6 +25,7 @@ public class BatchServiceImpl implements BatchService {
     private final BatchRepository batchRepository;
     private final TraineeRepository traineeRepository;
     private final TrainerRepository trainerRepository;
+    private final ClassroomRepository classroomRepository;
 
     @Override
     public ResponseEntity<Object> batchCreate(BatchCreateModel batchCreateModel){
@@ -70,6 +73,25 @@ public class BatchServiceImpl implements BatchService {
         batchEntity.setTrainerEntityList(trainers); // Assuming there's a setter for the trainees property in the Batch entity
 
         batchRepository.save(batchEntity);
+
+        return new ResponseEntity<>("Assigned Successfully", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> createClassroom(Integer batchId){
+        Optional<BatchEntity> optionalBatch = batchRepository.findById(batchId);
+        if (optionalBatch.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        BatchEntity batchEntity = optionalBatch.get();
+
+        ClassroomEntity classroomEntity = ClassroomEntity.builder()
+                .batchEntity(batchEntity)
+                .build();
+        classroomRepository.save(classroomEntity);
+
+        batchEntity.setClassroomEntity(classroomEntity);
 
         return new ResponseEntity<>("Assigned Successfully", HttpStatus.OK);
     }

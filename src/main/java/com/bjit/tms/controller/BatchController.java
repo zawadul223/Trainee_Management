@@ -3,7 +3,6 @@ package com.bjit.tms.controller;
 import com.bjit.tms.entity.BatchEntity;
 import com.bjit.tms.model.BatchCreateModel;
 import com.bjit.tms.service.BatchService;
-import com.bjit.tms.service.implementation.BatchServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +21,11 @@ public class BatchController {
         return batchService.batchCreate(batchCreateModel);
     }
 
+    @PostMapping("/classroom/create/{batchId}")
+    public ResponseEntity<Object> createClassroom(@PathVariable Integer batchId){
+        return batchService.createClassroom(batchId);
+    }
+
     @GetMapping("/all")
     public List<BatchEntity> all(){
         return batchService.allBatches();
@@ -34,6 +38,6 @@ public class BatchController {
 
     @PostMapping("/assign/trainer/{batchId}")
     public ResponseEntity<Object> assignTrainer(@PathVariable Integer batchId, @RequestBody List<Integer> trainers){
-        return batchService.assignTrainee(batchId, trainers);
+        return batchService.assignTrainer(batchId, trainers);
     }
 }
