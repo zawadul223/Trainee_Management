@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -30,5 +32,8 @@ public class TrainerEntity {
     @OneToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @ManyToMany(mappedBy = "trainerEntityList")
+    private List<BatchEntity> batches;
 
 }

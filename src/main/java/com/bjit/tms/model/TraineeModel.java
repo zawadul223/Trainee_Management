@@ -1,5 +1,6 @@
 package com.bjit.tms.model;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,4 +25,6 @@ public class TraineeModel {
     private Integer passingYear;
     private String address;
     private String password;
+    @Column(name="batch_id")
+    private Integer batchId;
 }

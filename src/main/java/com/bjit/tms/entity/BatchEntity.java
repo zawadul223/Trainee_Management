@@ -26,6 +26,17 @@ public class BatchEntity {
     @OneToMany(cascade = CascadeType.ALL)
     private List<TraineeEntity> traineeEntityList;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "batch_trainer",
+            joinColumns = @JoinColumn(
+                    name="batchId"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "trainerId"
+            )
+    )
     private List<TrainerEntity> trainerEntityList;
 }
