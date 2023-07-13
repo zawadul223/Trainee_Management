@@ -33,5 +33,7 @@ public class TrainerEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<CourseEntity> courseEntityList;
 
 }

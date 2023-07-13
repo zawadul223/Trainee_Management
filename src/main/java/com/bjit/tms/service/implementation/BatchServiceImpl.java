@@ -93,41 +93,5 @@ public class BatchServiceImpl implements BatchService {
         return new ResponseEntity<>("Assigned Successfully", HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<Object> createCourse(CourseCreateModel courseCreateModel) {
-        CourseEntity courseEntity = CourseEntity.builder()
-                .courseName(courseCreateModel.getCourseName())
-                .startDate(courseCreateModel.getStartDate())
-                .endDate(courseCreateModel.getEndDate())
-                .build();
 
-        courseRepository.save(courseEntity);
-
-        return new ResponseEntity<>(courseEntity, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<Object> assignCourse(Map<Integer, List<Integer>> batchCourseMap) {
-        for (Map.Entry<Integer, List<Integer>> entry : batchCourseMap.entrySet()) {
-            Integer batchId = entry.getKey();
-            List<Integer> courseIds = entry.getValue();
-
-            Optional<BatchEntity> batchOptional = batchRepository.findById(batchId);
-            if (batchOptional.isPresent()) {
-                BatchEntity batch = batchOptional.get();
-
-                List<CourseEntity> courses = courseRepository.findAllById(courseIds);
-                batch.setCourseEntityList(courses);
-
-                batchRepository.save(batch);
-
-            } else {
-                // Handle case when batch with the given ID is not found
-                return new ResponseEntity<>("Batch with ID " + batchId + " not found.", HttpStatus.NOT_FOUND);
-            }
-
-        }
-        return new ResponseEntity<>("Courses have been assigned", HttpStatus.CREATED);
-
-    }
 }

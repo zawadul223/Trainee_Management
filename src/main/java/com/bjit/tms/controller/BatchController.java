@@ -43,13 +43,5 @@ public class BatchController {
         return batchService.assignTrainer(batchId, trainers);
     }
 
-    @PostMapping("/course/create")
-    public ResponseEntity<Object> courseCreate(@RequestBody CourseCreateModel courseCreateModel){
-        return batchService.createCourse(courseCreateModel);
-    }
 
-    @PostMapping("/course/assign")
-    public ResponseEntity<Object> courseAssign(@RequestBody Map<Integer, List<Integer>> batchCourseMap){
-        return batchService.assignCourse(batchCourseMap);
-    }
 }
