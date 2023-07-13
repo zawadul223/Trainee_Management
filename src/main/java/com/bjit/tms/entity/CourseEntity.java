@@ -24,5 +24,4 @@ public class CourseEntity {
     private Date startDate;
     private Date endDate;
 
-
 }

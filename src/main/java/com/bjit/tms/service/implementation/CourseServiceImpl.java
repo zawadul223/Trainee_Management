@@ -36,7 +36,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Object> assignCourse(Map<Integer, List<Integer>> batchCourseMap) {
+    public ResponseEntity<Object> assignCoursetoBatch(Map<Integer, List<Integer>> batchCourseMap) {
         for (Map.Entry<Integer, List<Integer>> entry : batchCourseMap.entrySet()) {
             Integer batchId = entry.getKey();
             List<Integer> courseIds = entry.getValue();
@@ -58,5 +58,10 @@ public class CourseServiceImpl implements CourseService {
         }
         return new ResponseEntity<>("Courses have been assigned", HttpStatus.CREATED);
 
+    }
+
+    @Override
+    public ResponseEntity<Object> assignCoursetoTrainer(Integer trainerId, List<Integer> courseId) {
+        return null;
     }
 }

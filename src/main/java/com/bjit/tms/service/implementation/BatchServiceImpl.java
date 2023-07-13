@@ -57,22 +57,22 @@ public class BatchServiceImpl implements BatchService {
         return new ResponseEntity<>("Assigned Successfully", HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<Object> assignTrainer(Integer batchId, List<Integer> trainerIds) {
-        Optional<BatchEntity> optionalBatch = batchRepository.findById(batchId);
-        if (optionalBatch.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        BatchEntity batchEntity = optionalBatch.get();
-
-        List<TrainerEntity> trainers = trainerRepository.findAllById(trainerIds);
-        batchEntity.setTrainerEntityList(trainers); // Assuming there's a setter for the trainees property in the Batch entity
-
-        batchRepository.save(batchEntity);
-
-        return new ResponseEntity<>("Assigned Successfully", HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<Object> assignTrainer(Integer batchId, List<Integer> trainerIds) {
+//        Optional<BatchEntity> optionalBatch = batchRepository.findById(batchId);
+//        if (optionalBatch.isEmpty()) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        BatchEntity batchEntity = optionalBatch.get();
+//
+//        List<TrainerEntity> trainers = trainerRepository.findAllById(trainerIds);
+//        batchEntity.setTrainerEntityList(trainers); // Assuming there's a setter for the trainees property in the Batch entity
+//
+//        batchRepository.save(batchEntity);
+//
+//        return new ResponseEntity<>("Assigned Successfully", HttpStatus.OK);
+//    }
 
     @Override
     public ResponseEntity<Object> createClassroom(Integer batchId) {

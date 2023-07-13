@@ -10,5 +10,6 @@ import java.util.Map;
 @Service
 public interface CourseService {
     ResponseEntity<Object> createCourse(CourseCreateModel courseCreateModel);
-    ResponseEntity<Object> assignCourse(Map<Integer, List<Integer>> batchCourseMap);
+    ResponseEntity<Object> assignCoursetoBatch(Map<Integer, List<Integer>> batchCourseMap);
+    ResponseEntity<Object> assignCoursetoTrainer(Integer trainerId, List<Integer> courseId);
 }

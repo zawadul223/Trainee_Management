@@ -14,7 +14,7 @@ public interface BatchService {
     ResponseEntity<Object> batchCreate(BatchCreateModel batchCreateModel);
     List<BatchEntity> allBatches();
     ResponseEntity<Object> assignTrainee(Integer batchId, List<Integer> traineeIds);
-    ResponseEntity<Object> assignTrainer(Integer batchId, List<Integer> trainerIds);
+    //ResponseEntity<Object> assignTrainer(Integer batchId, List<Integer> trainerIds);
     ResponseEntity<Object> createClassroom(Integer batchId);
 
 }

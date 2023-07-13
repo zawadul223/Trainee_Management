@@ -24,8 +24,8 @@ public class CourseController {
         return courseService.createCourse(courseCreateModel);
     }
 
-    @PostMapping("/assign")
+    @PostMapping("/assign/batch")
     public ResponseEntity<Object> courseAssign(@RequestBody Map<Integer, List<Integer>> batchCourseMap){
-        return courseService.assignCourse(batchCourseMap);
+        return courseService.assignCoursetoBatch(batchCourseMap);
     }
 }

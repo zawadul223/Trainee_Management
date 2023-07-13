@@ -34,6 +34,15 @@ public class TrainerEntity {
     private UserEntity user;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "course_trainer",
+            joinColumns = @JoinColumn(
+                    name="trainer_Id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "course_id"
+            )
+    )
     private List<CourseEntity> courseEntityList;
 
 }
