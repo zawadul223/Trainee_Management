@@ -1,5 +1,6 @@
 package com.bjit.tms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,9 +24,11 @@ public class BatchEntity {
     private Date startDate;
     private Date endDate;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     private List<TraineeEntity> traineeEntityList;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "batch_trainer",
@@ -38,6 +41,20 @@ public class BatchEntity {
     )
     private List<TrainerEntity> trainerEntityList;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "batchEntity",cascade = CascadeType.ALL)
     private ClassroomEntity classroomEntity;
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "course_batch",
+            joinColumns = @JoinColumn(
+                    name="course_id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "batch_id"
+            )
+    )
+    private List<CourseEntity> courseEntityList;
 }

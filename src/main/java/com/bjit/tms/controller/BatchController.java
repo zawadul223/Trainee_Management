@@ -2,12 +2,14 @@ package com.bjit.tms.controller;
 
 import com.bjit.tms.entity.BatchEntity;
 import com.bjit.tms.model.BatchCreateModel;
+import com.bjit.tms.model.CourseCreateModel;
 import com.bjit.tms.service.BatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/batch")
@@ -39,5 +41,15 @@ public class BatchController {
     @PostMapping("/assign/trainer/{batchId}")
     public ResponseEntity<Object> assignTrainer(@PathVariable Integer batchId, @RequestBody List<Integer> trainers){
         return batchService.assignTrainer(batchId, trainers);
+    }
+
+    @PostMapping("/course/create")
+    public ResponseEntity<Object> courseCreate(@RequestBody CourseCreateModel courseCreateModel){
+        return batchService.createCourse(courseCreateModel);
+    }
+
+    @PostMapping("/course/assign")
+    public ResponseEntity<Object> courseAssign(@RequestBody Map<Integer, List<Integer>> batchCourseMap){
+        return batchService.assignCourse(batchCourseMap);
     }
 }

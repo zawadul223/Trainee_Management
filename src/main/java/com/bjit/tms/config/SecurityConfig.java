@@ -25,13 +25,30 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-//                .requestMatchers("/user/*")
-//                .permitAll()
+                .requestMatchers("/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+
+      /*
+        http
+                .csrf()
+                .disable()
+                .authorizeHttpRequests()
+               .requestMatchers("/**")
+               .permitAll()
 //                .requestMatchers("/book/id/{id}","book/all","book/author/{authorName}", "/book/{author}/{bookName}").hasAnyAuthority("ADMIN","CUSTOMER")
 //                .requestMatchers("/book/create","/book/delete","/book/update").hasAuthority("ADMIN")
                 .anyRequest()
-//                .authenticated()
-                .permitAll()
+             .authenticated()
+           //     .permitAll()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -39,6 +56,6 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         ;
-        return http.build();
+        return http.build();  */
     }
 }

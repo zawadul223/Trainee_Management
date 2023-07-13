@@ -33,7 +33,5 @@ public class TrainerEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToMany(mappedBy = "trainerEntityList")
-    private List<BatchEntity> batches;
 
 }
