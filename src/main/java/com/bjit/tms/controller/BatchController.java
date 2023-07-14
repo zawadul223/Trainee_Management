@@ -38,10 +38,10 @@ public class BatchController {
         return batchService.assignTrainee(batchId, trainees);
     }
 
-    @PostMapping("/assign/trainer/{batchId}")
-    public ResponseEntity<Object> assignTrainer(@PathVariable Integer batchId, @RequestBody List<Integer> trainers){
-        return batchService.assignTrainer(batchId, trainers);
-    }
+//    @PostMapping("/assign/trainer/{batchId}")
+//    public ResponseEntity<Object> assignTrainer(@PathVariable Integer batchId, @RequestBody List<Integer> trainers){
+//        return batchService.assignTrainer(batchId, trainers);
+//    }
 
 
 }

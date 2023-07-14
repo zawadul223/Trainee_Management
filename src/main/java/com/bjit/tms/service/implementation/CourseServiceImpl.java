@@ -1,10 +1,8 @@
 package com.bjit.tms.service.implementation;
 
-import com.bjit.tms.entity.BatchEntity;
-import com.bjit.tms.entity.CourseEntity;
+import com.bjit.tms.entity.*;
 import com.bjit.tms.model.CourseCreateModel;
-import com.bjit.tms.repository.BatchRepository;
-import com.bjit.tms.repository.CourseRepository;
+import com.bjit.tms.repository.*;
 import com.bjit.tms.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,13 +19,27 @@ public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
     private final BatchRepository batchRepository;
+    private final TrainerRepository trainerRepository;
+    private final CourseSchduleRepository courseSchduleRepository;
 
     @Override
     public ResponseEntity<Object> createCourse(CourseCreateModel courseCreateModel) {
-        CourseEntity courseEntity = CourseEntity.builder()
-                .courseName(courseCreateModel.getCourseName())
+
+        Integer trainerId = courseCreateModel.getTrainerId();
+        Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
+        if (optionalTrainer.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        CourseScheduleEntity courseScheduleEntity = CourseScheduleEntity.builder()
                 .startDate(courseCreateModel.getStartDate())
                 .endDate(courseCreateModel.getEndDate())
+                .trainerId(trainerId)
+                .build();
+        courseSchduleRepository.save(courseScheduleEntity);
+
+        CourseEntity courseEntity = CourseEntity.builder()
+                .courseName(courseCreateModel.getCourseName())
+                .scheduleId(courseSchduleRepository.findScheduleIdByTrainerId(trainerId))
                 .build();
 
         courseRepository.save(courseEntity);
@@ -62,6 +74,16 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public ResponseEntity<Object> assignCoursetoTrainer(Integer trainerId, List<Integer> courseId) {
-        return null;
+        Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
+        if (optionalTrainer.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        TrainerEntity trainerEntity = optionalTrainer.get();
+
+        List<CourseEntity> courseEntityList = courseRepository.findAllById(courseId);
+        trainerEntity.setCourseEntityList(courseEntityList);
+        trainerRepository.save(trainerEntity);
+        return new ResponseEntity<>("Assigned courses to trainer successfully", HttpStatus.OK);
     }
 }

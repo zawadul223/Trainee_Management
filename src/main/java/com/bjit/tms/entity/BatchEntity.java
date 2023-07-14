@@ -50,10 +50,10 @@ public class BatchEntity {
     @JoinTable(
             name = "course_batch",
             joinColumns = @JoinColumn(
-                    name="course_id"
+                    name="courseId"
             ),
             inverseJoinColumns = @JoinColumn(
-                    name = "batch_id"
+                    name = "batchId"
             )
     )
     private List<CourseEntity> courseEntityList;

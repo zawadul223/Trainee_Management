@@ -50,8 +50,8 @@ public class BatchServiceImpl implements BatchService {
         BatchEntity batchEntity = optionalBatch.get();
 
         List<TraineeEntity> trainees = traineeRepository.findAllById(traineeIds);
-        // batchEntity.setTraineeEntityList(trainees); // Assuming there's a setter for the trainees property in the Batch entity
-        batchEntity.getTraineeEntityList().addAll(trainees);
+         batchEntity.setTraineeEntityList(trainees); // Assuming there's a setter for the trainees property in the Batch entity
+        //batchEntity.getTraineeEntityList().addAll(trainees);
         batchRepository.save(batchEntity);
 
         return new ResponseEntity<>("Assigned Successfully", HttpStatus.OK);

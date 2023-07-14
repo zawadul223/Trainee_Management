@@ -11,9 +11,9 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CourseCreateModel {
-    private String courseName;
-    private Date startDate;
-    private Date endDate;
-    private Integer trainerId;
+public class AssignmentCreateModel {
+    private String file;
+    private String message;
+    private Date deadline;
+    private Integer courseId;
 }

@@ -33,7 +33,7 @@ public class TrainerEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "course_trainer",
             joinColumns = @JoinColumn(
