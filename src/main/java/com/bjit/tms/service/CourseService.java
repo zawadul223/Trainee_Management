@@ -1,6 +1,7 @@
 package com.bjit.tms.service;
 
 import com.bjit.tms.model.CourseCreateModel;
+import com.bjit.tms.model.CourseScheduleModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -11,5 +12,5 @@ import java.util.Map;
 public interface CourseService {
     ResponseEntity<Object> createCourse(CourseCreateModel courseCreateModel);
     ResponseEntity<Object> assignCoursetoBatch(Map<Integer, List<Integer>> batchCourseMap);
-    ResponseEntity<Object> assignCoursetoTrainer(Integer trainerId, List<Integer> courseId);
+    ResponseEntity<Object> courseSchedule(CourseScheduleModel courseScheduleModel);
 }

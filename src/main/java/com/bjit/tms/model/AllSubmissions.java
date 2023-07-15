@@ -8,13 +8,12 @@ import lombok.NoArgsConstructor;
 import java.sql.Date;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseScheduleModel {
-
-    private Integer courseId;
-    private Date startDate;
-    private Date endDate;
-    private Integer trainerId;
+@Builder
+public class AllSubmissions {
+    private String fileName;
+    private Date submissionDate;
+    private String traineeName;
+    private Integer assignmentId;
 }

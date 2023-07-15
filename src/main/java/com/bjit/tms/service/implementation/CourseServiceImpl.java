@@ -2,6 +2,7 @@ package com.bjit.tms.service.implementation;
 
 import com.bjit.tms.entity.*;
 import com.bjit.tms.model.CourseCreateModel;
+import com.bjit.tms.model.CourseScheduleModel;
 import com.bjit.tms.repository.*;
 import com.bjit.tms.service.CourseService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -25,27 +27,29 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public ResponseEntity<Object> createCourse(CourseCreateModel courseCreateModel) {
 
-        Integer trainerId = courseCreateModel.getTrainerId();
-        Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
-        if (optionalTrainer.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        CourseScheduleEntity courseScheduleEntity = CourseScheduleEntity.builder()
-                .startDate(courseCreateModel.getStartDate())
-                .endDate(courseCreateModel.getEndDate())
-                .trainerId(trainerId)
-                .build();
-        courseSchduleRepository.save(courseScheduleEntity);
+//        Integer trainerId = courseCreateModel.getTrainerId();
+//        Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
+//        if (optionalTrainer.isEmpty()) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        CourseScheduleEntity courseScheduleEntity = CourseScheduleEntity.builder()
+//                .startDate(courseCreateModel.getStartDate())
+//                .endDate(courseCreateModel.getEndDate())
+//                .trainerId(trainerId)
+//                .build();
+//        courseSchduleRepository.save(courseScheduleEntity);
 
         CourseEntity courseEntity = CourseEntity.builder()
                 .courseName(courseCreateModel.getCourseName())
-                .scheduleId(courseSchduleRepository.findScheduleIdByTrainerId(trainerId))
+                //.scheduleId(courseSchduleRepository.findScheduleIdByTrainerId(trainerId))
                 .build();
 
         courseRepository.save(courseEntity);
 
         return new ResponseEntity<>(courseEntity, HttpStatus.OK);
     }
+
+
 
     @Override
     public ResponseEntity<Object> assignCoursetoBatch(Map<Integer, List<Integer>> batchCourseMap) {
@@ -73,17 +77,31 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Object> assignCoursetoTrainer(Integer trainerId, List<Integer> courseId) {
+    public ResponseEntity<Object> courseSchedule(CourseScheduleModel courseScheduleModel) {
+        Integer trainerId = courseScheduleModel.getTrainerId();
         Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
         if (optionalTrainer.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>("Trainer not found", HttpStatus.NOT_FOUND);
+        }
+        Integer courseId = courseScheduleModel.getCourseId();
+        Optional<CourseEntity> optionalCourse = courseRepository.findById(courseId);
+        if (optionalCourse.isEmpty()) {
+            return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
         }
 
         TrainerEntity trainerEntity = optionalTrainer.get();
+        CourseEntity courseEntity = optionalCourse.get();
 
-        List<CourseEntity> courseEntityList = courseRepository.findAllById(courseId);
-        trainerEntity.setCourseEntityList(courseEntityList);
-        trainerRepository.save(trainerEntity);
-        return new ResponseEntity<>("Assigned courses to trainer successfully", HttpStatus.OK);
+        CourseScheduleEntity courseScheduleEntity = CourseScheduleEntity.builder()
+                .startDate(courseScheduleModel.getStartDate())
+                .endDate(courseScheduleModel.getEndDate())
+                .trainerId(courseScheduleModel.getTrainerId())
+                .build();
+        courseScheduleEntity.setCourseEntity(courseEntity);
+        courseSchduleRepository.save(courseScheduleEntity);
+//        trainerEntity.setCourseEntityList(courseEntityList);
+//        trainerRepository.save(trainerEntity);
+
+        return new ResponseEntity<>("Course Scheduled Successfully", HttpStatus.OK);
     }
 }

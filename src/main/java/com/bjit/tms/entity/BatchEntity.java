@@ -28,19 +28,6 @@ public class BatchEntity {
     @OneToMany(cascade = CascadeType.ALL)
     private List<TraineeEntity> traineeEntityList;
 
-//    @JsonIgnore
-//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "batch_trainer",
-//            joinColumns = @JoinColumn(
-//                    name="batchId"
-//            ),
-//            inverseJoinColumns = @JoinColumn(
-//                    name = "trainerId"
-//            )
-//    )
-//    private List<TrainerEntity> trainerEntityList;
-
     @JsonIgnore
     @OneToOne(mappedBy = "batchEntity",cascade = CascadeType.ALL)
     private ClassroomEntity classroomEntity;
@@ -57,4 +44,17 @@ public class BatchEntity {
             )
     )
     private List<CourseEntity> courseEntityList;
+
+    //    @JsonIgnore
+//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "batch_trainer",
+//            joinColumns = @JoinColumn(
+//                    name="batchId"
+//            ),
+//            inverseJoinColumns = @JoinColumn(
+//                    name = "trainerId"
+//            )
+//    )
+//    private List<TrainerEntity> trainerEntityList;
 }

@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -17,5 +19,15 @@ public class AssignmentSubmitEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer submissionId;
     private String file;
-    private Integer traineeId;
+   // private Integer traineeId;
+    private Date submissionDate;
+    private String traineeName;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "assignmentId")
+    private AssignmentCreateEntity assignmentCreateEntity;
+
+//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "traineeId")
+//    private TraineeEntity traineeEntity;
 }

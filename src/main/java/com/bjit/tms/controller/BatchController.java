@@ -2,6 +2,7 @@ package com.bjit.tms.controller;
 
 import com.bjit.tms.entity.BatchEntity;
 import com.bjit.tms.model.BatchCreateModel;
+import com.bjit.tms.model.BatchDetailModel;
 import com.bjit.tms.model.CourseCreateModel;
 import com.bjit.tms.service.BatchService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,8 @@ public class BatchController {
         return batchService.createClassroom(batchId);
     }
 
+
+
     @GetMapping("/all")
     public List<BatchEntity> all(){
         return batchService.allBatches();
@@ -42,6 +45,11 @@ public class BatchController {
 //    public ResponseEntity<Object> assignTrainer(@PathVariable Integer batchId, @RequestBody List<Integer> trainers){
 //        return batchService.assignTrainer(batchId, trainers);
 //    }
+
+    @GetMapping("/details/{batchId}")
+    public ResponseEntity<Object> detailModel(@PathVariable Integer batchId){
+        return batchService.getBatchInformation(batchId);
+    }
 
 
 }

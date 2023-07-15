@@ -6,15 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.List;
 
-@Data
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseScheduleModel {
+public class BatchDetailModel {
 
-    private Integer courseId;
+    private String batchName;
     private Date startDate;
     private Date endDate;
-    private Integer trainerId;
+    private List<String> traineeNames;
+    private List<CourseResponseModel> courses;
 }

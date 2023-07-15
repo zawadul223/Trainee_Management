@@ -33,16 +33,16 @@ public class TrainerEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "course_trainer",
-            joinColumns = @JoinColumn(
-                    name="trainer_Id"
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "course_id"
-            )
-    )
-    private List<CourseEntity> courseEntityList;
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "course_trainer",
+//            joinColumns = @JoinColumn(
+//                    name="trainer_Id"
+//            ),
+//            inverseJoinColumns = @JoinColumn(
+//                    name = "course_id"
+//            )
+//    )
+//    private List<CourseEntity> courseEntityList;
 
 }

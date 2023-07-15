@@ -1,6 +1,8 @@
 package com.bjit.tms.controller;
 
+import com.bjit.tms.model.BatchDetailModel;
 import com.bjit.tms.model.CourseCreateModel;
+import com.bjit.tms.model.CourseScheduleModel;
 import com.bjit.tms.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +28,10 @@ public class CourseController {
         return courseService.assignCoursetoBatch(batchCourseMap);
     }
 
-    @PostMapping("/assign/trainer/{trainerId}")
-    public ResponseEntity<Object> trainerAssign(@PathVariable Integer trainerId, @RequestBody List<Integer> courseList){
-        return courseService.assignCoursetoTrainer(trainerId, courseList);
+    @PostMapping("/schedule")
+    public ResponseEntity<Object> scheduleCourse(@RequestBody CourseScheduleModel courseScheduleModel){
+        return courseService.courseSchedule(courseScheduleModel);
     }
+
+
 }

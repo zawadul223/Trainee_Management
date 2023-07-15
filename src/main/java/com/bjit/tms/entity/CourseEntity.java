@@ -22,21 +22,21 @@ public class CourseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer courseId;
     private String courseName;
-    private Integer scheduleId;
+    //private Integer scheduleId;
 //    private Date startDate;
 //    private Date endDate;
 
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "course_assignment",
-            joinColumns = @JoinColumn(
-                    name="courseId"
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "assignmentId"
-            )
-    )
-    private List<AssignmentCreateEntity> assignmentCreateEntities;
+//    @JsonIgnore
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "course_assignment",
+//            joinColumns = @JoinColumn(
+//                    name="courseId"
+//            ),
+//            inverseJoinColumns = @JoinColumn(
+//                    name = "assignmentId"
+//            )
+//    )
+//    private List<AssignmentCreateEntity> assignmentCreateEntities;
 
 }

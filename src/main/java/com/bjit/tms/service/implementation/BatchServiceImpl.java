@@ -2,7 +2,9 @@ package com.bjit.tms.service.implementation;
 
 import com.bjit.tms.entity.*;
 import com.bjit.tms.model.BatchCreateModel;
+import com.bjit.tms.model.BatchDetailModel;
 import com.bjit.tms.model.CourseCreateModel;
+import com.bjit.tms.model.CourseResponseModel;
 import com.bjit.tms.repository.*;
 import com.bjit.tms.service.BatchService;
 import lombok.RequiredArgsConstructor;
@@ -10,9 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +27,7 @@ public class BatchServiceImpl implements BatchService {
     private final TrainerRepository trainerRepository;
     private final ClassroomRepository classroomRepository;
     private final CourseRepository courseRepository;
+    private final CourseSchduleRepository courseSchduleRepository;
 
     @Override
     public ResponseEntity<Object> batchCreate(BatchCreateModel batchCreateModel) {
@@ -32,6 +37,7 @@ public class BatchServiceImpl implements BatchService {
                 .endDate(batchCreateModel.getEndDate())
                 .build();
         BatchEntity savedBatch = batchRepository.save(batchEntity);
+        createClassroom(savedBatch.getBatchId());
         return new ResponseEntity<>(savedBatch, HttpStatus.CREATED);
     }
 
@@ -91,6 +97,59 @@ public class BatchServiceImpl implements BatchService {
         batchEntity.setClassroomEntity(classroomEntity);
 
         return new ResponseEntity<>("Assigned Successfully", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> getBatchInformation(Integer batchId) {
+        Optional<BatchEntity> optionalBatch = batchRepository.findById(batchId);
+        if (optionalBatch.isEmpty()) {
+            // Handle case when batch is not found
+            return new ResponseEntity<Object>("Batch not found", HttpStatus.NOT_FOUND);
+        }
+
+        BatchEntity batchEntity = optionalBatch.get();
+
+        // Fetch trainee names for the batch
+        List<String> traineeNames = batchEntity.getTraineeEntityList()
+                .stream()
+                .map(TraineeEntity::getName)
+                .collect(Collectors.toList());
+
+        // Fetch course details with assigned trainers for the batch
+        List<CourseResponseModel> courses = new ArrayList<>();
+        for (CourseEntity courseEntity : batchEntity.getCourseEntityList()) {
+            CourseResponseModel courseResponse = new CourseResponseModel();
+            Integer courseId = courseEntity.getCourseId();
+            CourseScheduleEntity courseScheduleEntity = courseSchduleRepository.findByCourseEntity_CourseId(courseId);
+            courseResponse.setCourseName(courseEntity.getCourseName());
+            courseResponse.setStartDate(courseScheduleEntity.getStartDate());
+            courseResponse.setEndDate(courseScheduleEntity.getEndDate());
+
+            // Fetch course schedules for the course
+            List<CourseScheduleEntity> courseSchedules = courseSchduleRepository.findByCourseEntity(courseEntity);
+
+            // Fetch assigned trainers for each course schedule
+            List<String> trainerNames = courseSchedules.stream()
+                    .map(CourseScheduleEntity::getTrainerId)
+                    .map(trainerId -> {
+                        Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
+                        return optionalTrainer.map(TrainerEntity::getName).orElse("");
+                    })
+                    .collect(Collectors.toList());
+
+            courseResponse.setTrainerNames(trainerNames);
+            courses.add(courseResponse);
+        }
+
+        // Create and return the batch response model
+        BatchDetailModel batchResponse = new BatchDetailModel();
+        batchResponse.setBatchName(batchEntity.getBatchName());
+        batchResponse.setStartDate(batchEntity.getStartDate());
+        batchResponse.setEndDate(batchEntity.getEndDate());
+        batchResponse.setTraineeNames(traineeNames);
+        batchResponse.setCourses(courses);
+
+        return new ResponseEntity<>(batchResponse, HttpStatus.OK);
     }
 
 

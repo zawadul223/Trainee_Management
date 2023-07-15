@@ -2,6 +2,7 @@ package com.bjit.tms.service;
 
 import com.bjit.tms.entity.BatchEntity;
 import com.bjit.tms.model.BatchCreateModel;
+import com.bjit.tms.model.BatchDetailModel;
 import com.bjit.tms.model.CourseCreateModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,4 +18,5 @@ public interface BatchService {
     //ResponseEntity<Object> assignTrainer(Integer batchId, List<Integer> trainerIds);
     ResponseEntity<Object> createClassroom(Integer batchId);
 
+    ResponseEntity<Object> getBatchInformation(Integer batchId);
 }

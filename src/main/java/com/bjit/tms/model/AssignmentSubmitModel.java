@@ -5,16 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseScheduleModel {
-
+public class AssignmentSubmitModel {
+    private Integer assignmentId;
+    private String file;
     private Integer courseId;
-    private Date startDate;
-    private Date endDate;
-    private Integer trainerId;
 }

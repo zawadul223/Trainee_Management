@@ -13,7 +13,7 @@ import java.sql.Date;
 @Data
 public class CourseCreateModel {
     private String courseName;
-    private Date startDate;
-    private Date endDate;
-    private Integer trainerId;
+//    private Date startDate;
+//    private Date endDate;
+    //private Integer trainerId;
 }

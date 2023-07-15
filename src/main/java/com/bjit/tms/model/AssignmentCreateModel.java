@@ -16,4 +16,6 @@ public class AssignmentCreateModel {
     private String message;
     private Date deadline;
     private Integer courseId;
+    private Integer batchId;
+    //private String assignmentCreator;
 }

@@ -1,10 +1,13 @@
 package com.bjit.tms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.sql.Date;
 
@@ -20,7 +23,18 @@ public class AssignmentCreateEntity {
     private Integer assignmentId;
     private String message;
     private String file;
+    private Date createdDate;
     private Date deadline;
-    private Integer courseId;
+    private String assignmentCreator;
+
+    //@JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "courseId")
+    private CourseEntity courseEntity;
+
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "batchId")
+    private BatchEntity batchEntity;
 
 }
