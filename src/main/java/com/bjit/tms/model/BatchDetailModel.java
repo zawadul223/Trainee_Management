@@ -19,4 +19,5 @@ public class BatchDetailModel {
     private Date endDate;
     private List<String> traineeNames;
     private List<CourseResponseModel> courses;
+    private List<NoticeListModel> notices;
 }

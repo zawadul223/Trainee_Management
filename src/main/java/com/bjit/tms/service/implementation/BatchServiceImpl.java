@@ -1,10 +1,7 @@
 package com.bjit.tms.service.implementation;
 
 import com.bjit.tms.entity.*;
-import com.bjit.tms.model.BatchCreateModel;
-import com.bjit.tms.model.BatchDetailModel;
-import com.bjit.tms.model.CourseCreateModel;
-import com.bjit.tms.model.CourseResponseModel;
+import com.bjit.tms.model.*;
 import com.bjit.tms.repository.*;
 import com.bjit.tms.service.BatchService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ public class BatchServiceImpl implements BatchService {
     private final ClassroomRepository classroomRepository;
     private final CourseRepository courseRepository;
     private final CourseSchduleRepository courseSchduleRepository;
+    private final NoticeRepository noticeRepository;
 
     @Override
     public ResponseEntity<Object> batchCreate(BatchCreateModel batchCreateModel) {
@@ -141,6 +141,16 @@ public class BatchServiceImpl implements BatchService {
             courses.add(courseResponse);
         }
 
+        List<NoticeEntity> noticeEntity = noticeRepository.findNoticeEntitiesByBatchEntity(batchEntity);
+        List<NoticeListModel> noticeListModels = new ArrayList<NoticeListModel>();
+        for(NoticeEntity n : noticeEntity){
+            NoticeListModel noticeListModel = NoticeListModel.builder()
+                    .notice(n.getNotice())
+                    .time(n.getTime())
+                    .trainerName(n.getTrainerEntity().getName())
+                    .build();
+            noticeListModels.add(noticeListModel);
+        }
         // Create and return the batch response model
         BatchDetailModel batchResponse = new BatchDetailModel();
         batchResponse.setBatchName(batchEntity.getBatchName());
@@ -148,9 +158,59 @@ public class BatchServiceImpl implements BatchService {
         batchResponse.setEndDate(batchEntity.getEndDate());
         batchResponse.setTraineeNames(traineeNames);
         batchResponse.setCourses(courses);
+        batchResponse.setNotices(noticeListModels);
 
         return new ResponseEntity<>(batchResponse, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<Object> createNotice(Integer trainerId, NoticeModel noticeModel) {
+
+        Integer batchId = noticeModel.getBatchId();
+        Optional<BatchEntity> optionalBatch = batchRepository.findById(batchId);
+        if (optionalBatch.isEmpty()) {
+            // Handle case when batch is not found
+            return new ResponseEntity<Object>("Batch not found", HttpStatus.NOT_FOUND);
+        }
+        BatchEntity batchEntity = optionalBatch.get();
+
+        Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
+        if (optionalTrainer.isEmpty()) {
+            return new ResponseEntity<>("Trainer not found", HttpStatus.NOT_FOUND);
+        }
+        TrainerEntity trainerEntity = optionalTrainer.get();
+
+        NoticeEntity noticeEntity = NoticeEntity.builder()
+                .notice(noticeModel.getNotice())
+                .batchEntity(batchEntity)
+                .trainerEntity(trainerEntity)
+                .time(Date.valueOf(LocalDate.now()))
+                .build();
+
+        noticeRepository.save(noticeEntity);
+        return new ResponseEntity<>("Notice Created", HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<List<NoticeListModel>> noticeList(Integer batchId) {
+        Optional<BatchEntity> optionalBatch = batchRepository.findById(batchId);
+        if (optionalBatch.isEmpty()) {
+            // Handle case when batch is not found
+            return ResponseEntity.notFound().build();
+        }
+        BatchEntity batchEntity = optionalBatch.get();
+
+        List<NoticeEntity> noticeEntity = noticeRepository.findNoticeEntitiesByBatchEntity(batchEntity);
+        List<NoticeListModel> noticeListModels = new ArrayList<NoticeListModel>();
+        for(NoticeEntity n : noticeEntity){
+            NoticeListModel noticeListModel = NoticeListModel.builder()
+                    .notice(n.getNotice())
+                    .time(n.getTime())
+                    .trainerName(n.getTrainerEntity().getName())
+                    .build();
+            noticeListModels.add(noticeListModel);
+        }
+        return new ResponseEntity<>(noticeListModels, HttpStatus.OK);
+    }
 
 }

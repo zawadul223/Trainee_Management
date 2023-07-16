@@ -2,7 +2,9 @@ package com.bjit.tms.controller;
 
 import com.bjit.tms.entity.AssignmentCreateEntity;
 import com.bjit.tms.entity.AssignmentSubmitEntity;
+import com.bjit.tms.model.AllSubmissions;
 import com.bjit.tms.model.AssignmentCreateModel;
+import com.bjit.tms.model.AssignmentList;
 import com.bjit.tms.model.AssignmentSubmitModel;
 import com.bjit.tms.service.AssignmentService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +25,7 @@ public class AssignmentController {
     }
 
     @GetMapping("/list/{batchId}")
-    public ResponseEntity<List<AssignmentCreateEntity>> assignmentList(@PathVariable Integer batchId){
+    public ResponseEntity<List<AssignmentList>> assignmentList(@PathVariable Integer batchId){
         return assignmentService.assignments(batchId);
     }
 
@@ -33,7 +35,7 @@ public class AssignmentController {
     }
 
     @GetMapping("/submission/{assignmentId}")
-    public List<AssignmentSubmitEntity> submissionList(@PathVariable Integer assignmentId){
+    public ResponseEntity<List<AllSubmissions>> submissionList(@PathVariable Integer assignmentId){
         return assignmentService.submissions(assignmentId);
     }
 }

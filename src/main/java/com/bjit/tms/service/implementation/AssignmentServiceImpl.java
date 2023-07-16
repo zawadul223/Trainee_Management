@@ -99,7 +99,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public ResponseEntity<List<AssignmentCreateEntity>> assignments(Integer batchId) {
+    public ResponseEntity<List<AssignmentList>> assignments(Integer batchId) {
         Optional<BatchEntity> optionalBatch = batchRepository.findById(batchId);
         if (optionalBatch.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -107,17 +107,45 @@ public class AssignmentServiceImpl implements AssignmentService {
 
         BatchEntity batch = optionalBatch.get();
         List<AssignmentCreateEntity> assignments = assignmentCreateRepository.findByBatchEntity(batch);
+        List<AssignmentList> lists = new ArrayList<AssignmentList>();
 
-        return ResponseEntity.ok(assignments);
+        for(AssignmentCreateEntity i : assignments){
+            CourseEntity courseEntity = i.getCourseEntity();
+            AssignmentList assignmentList = AssignmentList.builder()
+                    .assignmentCreator(i.getAssignmentCreator())
+                    .courseName(courseEntity.getCourseName())
+                    .createdDate(i.getCreatedDate())
+                    .deadline(i.getDeadline())
+                    .message(i.getMessage())
+                    .file(i.getFile())
+                    .build();
+            lists.add(assignmentList);
+        }
+
+        return ResponseEntity.ok(lists);
     }
 
     @Override
-    public List<AllSubmissions> submissions(Integer assignmentId) {
+    public ResponseEntity<List<AllSubmissions>> submissions(Integer assignmentId) {
 
+
+        Optional <AssignmentCreateEntity> optionalAssignment = assignmentCreateRepository.findById(assignmentId);
+        if(optionalAssignment.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        AssignmentCreateEntity assignment = optionalAssignment.get();
         List<AssignmentSubmitEntity> lists = assignmentSubmitRepository.findByAssignmentCreateEntity_AssignmentId(assignmentId);
-        AssignmentCreateEntity assignment = assignmentCreateRepository.findById(assignmentId).get();
-
-        return null;
+        List<AllSubmissions> submissions = new ArrayList<AllSubmissions>();
+        for(AssignmentSubmitEntity i : lists){
+            AllSubmissions allSubmissions = AllSubmissions.builder()
+                    .assignmentId(assignmentId)
+                    .fileName(i.getFile())
+                    .submissionDate(i.getSubmissionDate())
+                    .traineeName(i.getTraineeName())
+                    .build();
+            submissions.add(allSubmissions);
+        }
+        return new ResponseEntity<>(submissions, HttpStatus.OK);
     }
 
 }

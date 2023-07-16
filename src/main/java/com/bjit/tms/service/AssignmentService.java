@@ -16,6 +16,6 @@ public interface AssignmentService {
 
     ResponseEntity<Object> createAssignment(Integer creatorId, AssignmentCreateModel assignmentCreateModel);
     ResponseEntity<Object> submitAssignment(Integer traineeId, AssignmentSubmitModel assignmentSubmitModel);
-    public ResponseEntity<List<AssignmentCreateEntity>> assignments(Integer batchId);
-    List<AllSubmissions> submissions(Integer assignmentId);
+    public ResponseEntity<List<AssignmentList>> assignments(Integer batchId);
+    ResponseEntity<List<AllSubmissions>> submissions(Integer assignmentId);
 }

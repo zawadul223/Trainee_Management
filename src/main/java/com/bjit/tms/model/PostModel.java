@@ -5,18 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
-
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AssignmentList {
+public class PostModel {
 
-    private String courseName;
     private String message;
     private String file;
-    private Date createdDate;
-    private Date deadline;
-    private String assignmentCreator;
+    private Integer classroomId;
 }

@@ -1,9 +1,7 @@
 package com.bjit.tms.controller;
 
 import com.bjit.tms.entity.BatchEntity;
-import com.bjit.tms.model.BatchCreateModel;
-import com.bjit.tms.model.BatchDetailModel;
-import com.bjit.tms.model.CourseCreateModel;
+import com.bjit.tms.model.*;
 import com.bjit.tms.service.BatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +27,6 @@ public class BatchController {
         return batchService.createClassroom(batchId);
     }
 
-
-
     @GetMapping("/all")
     public List<BatchEntity> all(){
         return batchService.allBatches();
@@ -51,5 +47,14 @@ public class BatchController {
         return batchService.getBatchInformation(batchId);
     }
 
+    @PostMapping("/notice/create/{trainerId}")
+    public ResponseEntity<Object> giveNotice(@PathVariable Integer trainerId, @RequestBody NoticeModel noticeModel){
+        return batchService.createNotice(trainerId, noticeModel);
+    }
+
+    @GetMapping("/notice/getNotices/{batchId}")
+    public ResponseEntity<List<NoticeListModel>> getNotices(@PathVariable Integer batchId){
+        return batchService.noticeList(batchId);
+    }
 
 }

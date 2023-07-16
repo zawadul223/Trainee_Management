@@ -25,8 +25,24 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/**")
+                .requestMatchers("/user/login")
                 .permitAll()
+                .requestMatchers("/user/register/**",
+                        "/batch/create", "/batch/classroom/create/{batchId}",
+                        "/batch/all", "/batch/assign/trainee/{batchId}",
+                        "/batch/notice/getNotices/{batchId}",
+                        "/course/create", "/course/assign/batch",
+                        "/course/schedule").hasAnyAuthority("ADMIN")
+                .requestMatchers("/assignment/create/{trainerId}", "/assignment/list/{batchId}",
+                        "/assignment/submission/{assignmentId}",
+                        "/classroom/post/{trainerId}", "/classroom/allPosts/{classroomId}",
+                        "/classroom/allComments/{postId}", "/classroom/comment/{traineeId}",
+                        "/batch/notice/create/{trainerId}", "/batch/all",
+                        "/batch/notice/getNotices/{batchId}").hasAnyAuthority("TRAINER")
+                .requestMatchers("/assignment/list/{batchId}", "/classroom/allPosts/{classroomId}",
+                         "/assignment/submit/{traineeId}", "/classroom/comment/{traineeId}",
+                        "/classroom/allComments/{postId}", "/allPosts/{classroomId}",
+                        "/batch/notice/getNotices/{batchId}").hasAnyAuthority("TRAINEES")
                 .anyRequest()
                 .authenticated()
                 .and()
