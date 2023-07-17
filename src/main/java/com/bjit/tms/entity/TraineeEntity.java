@@ -23,6 +23,7 @@ public class TraineeEntity {
     private Integer traineeId;
     private String name;
     private String traineePhoto;
+    private String fileType;
     private String gender;
     private Date dateOfBirth;
     private String traineeEmail;
@@ -31,6 +32,9 @@ public class TraineeEntity {
     private Double cgpa;
     private Integer passingYear;
     private String address;
+    @Lob
+    @Column(name = "traineeImage")
+    private byte[] traineeImage;
 
     @OneToOne
     @JoinColumn(name = "user_id")

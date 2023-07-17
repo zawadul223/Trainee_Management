@@ -10,10 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,9 +26,19 @@ public class UserController {
         return userService.traineeRegister(traineeModel);
     }
 
+    @PostMapping("/register/admin")
+    public ResponseEntity<?> adminRegisterURL(@RequestBody UserModel usermodel){
+        return userService.adminRegister(usermodel);
+    }
+
     @PostMapping("/register/trainer")
     public ResponseEntity<Object> trainerRegisterURL(@RequestBody TrainerModel trainerModel){
         return userService.trainerRegister(trainerModel);
+    }
+
+    @PostMapping("/photo/{role}/{id}")
+    public ResponseEntity<?> photoUpload(@PathVariable String role, @PathVariable Integer id, @RequestParam("image") MultipartFile multipartFile){
+        return userService.uploadPhoto(multipartFile, role, id);
     }
 
     @PostMapping("/login")
