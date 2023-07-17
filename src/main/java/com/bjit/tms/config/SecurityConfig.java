@@ -25,9 +25,9 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/user/login")
+                .requestMatchers("/user/login", "/user/register/admin", "/user/photo/{role}/{id}")
                 .permitAll()
-                .requestMatchers("/user/register/**",
+                .requestMatchers("/user/register/trainer", "/user/register/trainee",
                         "/batch/create", "/batch/classroom/create/{batchId}",
                         "/batch/all", "/batch/assign/trainee/{batchId}",
                         "/batch/notice/getNotices/{batchId}",
@@ -53,25 +53,5 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
 
-      /*
-        http
-                .csrf()
-                .disable()
-                .authorizeHttpRequests()
-               .requestMatchers("/**")
-               .permitAll()
-//                .requestMatchers("/book/id/{id}","book/all","book/author/{authorName}", "/book/{author}/{bookName}").hasAnyAuthority("ADMIN","CUSTOMER")
-//                .requestMatchers("/book/create","/book/delete","/book/update").hasAuthority("ADMIN")
-                .anyRequest()
-             .authenticated()
-           //     .permitAll()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-        ;
-        return http.build();  */
     }
 }

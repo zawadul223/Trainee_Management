@@ -23,11 +23,15 @@ public class TrainerEntity {
     private String name;
     private String trainerEmail;
     private String trainerPhoto;
+    private String fileType;
     private String designation;
     private Date joiningDate;
     private Double experience;
     private String expertise;
     private String trainerContactNo;
+    @Lob
+    @Column(name = "trainerImage", length = 1000)
+    private byte[] trainerImage;
 
     @OneToOne
     @JoinColumn(name = "user_id")
