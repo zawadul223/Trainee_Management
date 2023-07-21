@@ -22,6 +22,9 @@ public class AssignmentSubmitEntity {
    // private Integer traineeId;
     private Date submissionDate;
     private String traineeName;
+    @Lob
+    @Column(name = "assignmentSubmitFile")
+    private byte[] assignmentSubmitFile;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "assignmentId")

@@ -26,6 +26,9 @@ public class AssignmentCreateEntity {
     private Date createdDate;
     private Date deadline;
     private String assignmentCreator;
+    @Lob
+    @Column(name = "assignmentCreateFile")
+    private byte[] assignmentCreateFile;
 
     //@JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
