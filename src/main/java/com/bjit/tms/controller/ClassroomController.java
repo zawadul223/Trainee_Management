@@ -8,6 +8,7 @@ import com.bjit.tms.service.ClassroomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -35,5 +36,15 @@ public class ClassroomController {
     @GetMapping("/allComments/{postId}")
     public ResponseEntity<List<CommentListModel>> allComments(@PathVariable Integer postId){
         return classroomService.commentList(postId);
+    }
+
+    @PostMapping("/post/file/{postId}")
+    public ResponseEntity<?> postUpload(@RequestParam("file") MultipartFile file, @PathVariable Integer postId){
+        return classroomService.postFile(file, postId);
+    }
+
+    @GetMapping("/post/get/{postId}")
+    public ResponseEntity<?> postDownload(@PathVariable Integer postId){
+        return classroomService.getFile(postId);
     }
 }

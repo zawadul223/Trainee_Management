@@ -7,11 +7,20 @@ import com.bjit.tms.model.PostListModel;
 import com.bjit.tms.model.PostModel;
 import com.bjit.tms.repository.*;
 import com.bjit.tms.service.ClassroomService;
+import com.bjit.tms.utils.EntityCheck;
+import com.bjit.tms.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.nio.file.Files;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,6 +35,8 @@ public class ClassroomServiceImpl implements ClassroomService {
     private final TrainerRepository trainerRepository;
     private final TraineeRepository traineeRepository;
     private final CommentRepository commentRepository;
+    private final EntityCheck entityCheck;
+    private final String folderPath = "E:\\Projects\\Final\\Files\\Post\\";
     @Override
     public ResponseEntity<Object> createPost(Integer trainerId, PostModel postModel) {
 
@@ -122,5 +133,63 @@ public class ClassroomServiceImpl implements ClassroomService {
         return new ResponseEntity<>(commentListModelList, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<?> postFile(MultipartFile file, Integer postId) {
+//        Optional<ClassroomPostEntity> optionalClassroomPost = postRepository.findById(postId);
+//
+//        if(optionalClassroomPost.isEmpty()){
+//            return ResponseEntity.notFound().build();
+//        }
+//        ClassroomPostEntity classroomPostEntity = optionalClassroomPost.get();
+//        Optional<ClassroomPostEntity> optionalClassroomPost = postRepository.findById(postId);
+        if (entityCheck.checker("classroom", postId)){
+            return ResponseEntity.notFound().build();
+        }
+        ClassroomPostEntity classroomPostEntity = postRepository.findById(postId).get();
+        String filePath = folderPath + file.getOriginalFilename();
+        classroomPostEntity.setFile(file.getOriginalFilename());
+        classroomPostEntity.setFilePath(filePath);
+        classroomPostEntity.setFileType(file.getContentType());
+
+        try{
+            file.transferTo(new File(filePath));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body("Couldn't save file");
+        }
+        postRepository.save(classroomPostEntity);
+        return new ResponseEntity<>("Post uploaded", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> getFile(Integer postId) {
+        if (entityCheck.checker("classroompost", postId)) {
+            return ResponseEntity.notFound().build();
+        }
+        ClassroomPostEntity classroomPostEntity = postRepository.findById(postId).get();
+        String filePath = classroomPostEntity.getFilePath();
+        File file = new File(filePath);
+//        byte[] file;
+//        try {
+//            file = Files.readAllBytes(new File(filePath).toPath());
+//        } catch (Exception e) {
+//            return ResponseEntity.notFound().build();
+//        }
+        try{
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName());
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .headers(headers)
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .contentLength(file.length())
+                    .body(resource);
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body("Error with file");
+        }
+
+    }
 
 }

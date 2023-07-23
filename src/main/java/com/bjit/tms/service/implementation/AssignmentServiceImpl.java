@@ -7,11 +7,14 @@ import com.bjit.tms.model.AssignmentList;
 import com.bjit.tms.model.AssignmentSubmitModel;
 import com.bjit.tms.repository.*;
 import com.bjit.tms.service.AssignmentService;
+import com.bjit.tms.utils.EntityCheck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,6 +30,8 @@ public class AssignmentServiceImpl implements AssignmentService {
     private final TraineeRepository traineeRepository;
     private final AssignmentSubmitRepository assignmentSubmitRepository;
     private final BatchRepository batchRepository;
+    private final EntityCheck entityCheck;
+    private final String folder_path = "E:\\Projects\\Final\\Files";
     @Override
     public ResponseEntity<Object> createAssignment(Integer creatorId, AssignmentCreateModel assignmentCreateModel) {
 
@@ -147,5 +152,46 @@ public class AssignmentServiceImpl implements AssignmentService {
         }
         return new ResponseEntity<>(submissions, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<?> assignmentCreateFile(MultipartFile file, Integer assignmentCreateId) {
+
+        if (!entityCheck.checker("assignmentCreate", assignmentCreateId)){
+            return ResponseEntity.notFound().build();
+        }
+        String filePath = folder_path+"\\Assignments\\"+file.getOriginalFilename();
+        AssignmentCreateEntity assignmentCreateEntity = assignmentCreateRepository.findById(assignmentCreateId).get();
+        assignmentCreateEntity.setFile(file.getOriginalFilename());
+        assignmentCreateEntity.setFilePath(filePath);
+        try{
+            file.transferTo(new File(filePath));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body("Couldn't save file");
+        }
+        assignmentCreateRepository.save(assignmentCreateEntity);
+
+        return new ResponseEntity<>("File Uploaded", HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<?> assignmentSubmitFile(MultipartFile file, Integer assignmentSubmitId) {
+        if(entityCheck.checker("assignmentsubmit", assignmentSubmitId)){
+            return ResponseEntity.notFound().build();
+        }
+        AssignmentSubmitEntity assignmentSubmitEntity = assignmentSubmitRepository.findById(assignmentSubmitId).get();
+        String filePath = folder_path+"\\Submissions\\"+file.getOriginalFilename();
+        assignmentSubmitEntity.setFile(file.getOriginalFilename());
+        assignmentSubmitEntity.setFileType(file.getContentType());
+        assignmentSubmitEntity.setPathname(filePath);
+        try{
+            file.transferTo(new File(filePath));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body("Couldn't save file");
+        }
+        return new ResponseEntity<>("Assignment Uploaded", HttpStatus.OK);
+    }
+
 
 }

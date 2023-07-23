@@ -36,9 +36,14 @@ public class UserController {
         return userService.trainerRegister(trainerModel);
     }
 
-    @PostMapping("/photo/{role}/{id}")
-    public ResponseEntity<?> photoUpload(@PathVariable String role, @PathVariable Integer id, @RequestParam("image") MultipartFile multipartFile){
-        return userService.uploadPhoto(multipartFile, role, id);
+    @PostMapping("/photo/trainee/{id}")
+    public ResponseEntity<?> photoUploadTrainee(@PathVariable Integer id, @RequestParam("image") MultipartFile multipartFile){
+        return userService.uploadPhoto(multipartFile, "trainee", id);
+    }
+
+    @PostMapping("/photo/trainer/{id}")
+    public ResponseEntity<?> photoUploadTrainer(@PathVariable Integer id, @RequestParam("image") MultipartFile multipartFile){
+        return userService.uploadPhoto(multipartFile, "trainer", id);
     }
 
     @PostMapping("/login")

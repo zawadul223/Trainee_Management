@@ -38,7 +38,7 @@ public class BatchServiceImpl implements BatchService {
                 .build();
         BatchEntity savedBatch = batchRepository.save(batchEntity);
         createClassroom(savedBatch.getBatchId());
-        return new ResponseEntity<>(savedBatch, HttpStatus.CREATED);
+        return ResponseEntity.ok().body(Map.of("success", true));
     }
 
     @Override

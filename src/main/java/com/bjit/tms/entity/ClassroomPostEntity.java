@@ -21,9 +21,8 @@ public class ClassroomPostEntity {
     private String message;
     private String file;
     private Date date;
-    @Lob
-    @Column(name = "classroomPost")
-    private byte[] classroomPost;
+    private String filePath;
+    private String fileType;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "classroomId")
