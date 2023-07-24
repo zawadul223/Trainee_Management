@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -175,5 +177,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity findByEmail(String email){
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public ResponseEntity<?> unassignedTrainees() {
+        List<TraineeEntity> traineeEntityList = traineeRepository.findAll();
+        List<String> unassignedTraineeList = new ArrayList<String>();
+        for(TraineeEntity traineeEntity : traineeEntityList){
+            if(traineeEntity.getAssignedBatch().equals("")){
+                unassignedTraineeList.add(traineeEntity.getName());
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(unassignedTraineeList);
     }
 }

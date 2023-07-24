@@ -46,6 +46,11 @@ public class UserController {
         return userService.uploadPhoto(multipartFile, "trainer", id);
     }
 
+    @GetMapping("/unassigned/trainees")
+    public ResponseEntity<?> unassignedTraineeList(){
+        return userService.unassignedTrainees();
+    }
+
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody AuthenticationRequest authenticationRequest){
         return new ResponseEntity<>(userService.login(authenticationRequest), HttpStatus.OK);

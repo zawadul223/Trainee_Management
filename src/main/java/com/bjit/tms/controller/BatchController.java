@@ -33,7 +33,7 @@ public class BatchController {
     }
 
     @PostMapping("/assign/trainee/{batchId}")
-    public ResponseEntity<Object> assignTrainee(@PathVariable Integer batchId, @RequestBody List<Integer> trainees){
+    public ResponseEntity<Object> assignTrainee(@PathVariable Integer batchId, @RequestBody List<String> trainees){
         return batchService.assignTrainee(batchId, trainees);
     }
 

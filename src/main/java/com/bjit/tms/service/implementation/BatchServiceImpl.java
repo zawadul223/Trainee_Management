@@ -37,8 +37,11 @@ public class BatchServiceImpl implements BatchService {
                 .endDate(batchCreateModel.getEndDate())
                 .build();
         BatchEntity savedBatch = batchRepository.save(batchEntity);
-        createClassroom(savedBatch.getBatchId());
-        return ResponseEntity.ok().body(Map.of("success", true));
+        Integer id = savedBatch.getBatchId();
+        createClassroom(id);
+
+        return ResponseEntity.ok().body(Map.of("success", true,
+                "id", id));
     }
 
     @Override
@@ -47,17 +50,20 @@ public class BatchServiceImpl implements BatchService {
     }
 
     @Override
-    public ResponseEntity<Object> assignTrainee(Integer batchId, List<Integer> traineeIds) {
+    public ResponseEntity<Object> assignTrainee(Integer batchId, List<String> traineeNames) {
         Optional<BatchEntity> optionalBatch = batchRepository.findById(batchId);
         if (optionalBatch.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
         BatchEntity batchEntity = optionalBatch.get();
+        List<TraineeEntity> trainees = new ArrayList<TraineeEntity>();
 
-        List<TraineeEntity> trainees = traineeRepository.findAllById(traineeIds);
-         batchEntity.setTraineeEntityList(trainees); // Assuming there's a setter for the trainees property in the Batch entity
-        //batchEntity.getTraineeEntityList().addAll(trainees);
+        for (String name : traineeNames) {
+            TraineeEntity traineeEntity = traineeRepository.findByName(name);
+            trainees.add(traineeEntity);
+        }
+        batchEntity.setTraineeEntityList(trainees);
         batchRepository.save(batchEntity);
 
         return new ResponseEntity<>("Assigned Successfully", HttpStatus.OK);

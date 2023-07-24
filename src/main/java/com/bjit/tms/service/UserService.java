@@ -15,6 +15,7 @@ public interface UserService {
     ResponseEntity<?> uploadPhoto(MultipartFile file, String role, Integer id);
     AuthenticationResponse login(AuthenticationRequest authenticationRequest);
     UserEntity findByEmail(String email);
+    ResponseEntity<?> unassignedTrainees();
 
 
 }
