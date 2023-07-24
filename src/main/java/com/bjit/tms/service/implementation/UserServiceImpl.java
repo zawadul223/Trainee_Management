@@ -20,6 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -29,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final String directory = System.getProperty("user.dir");
 
     @Override
     public ResponseEntity<Object> traineeRegister(TraineeModel traineeModel){
@@ -38,9 +42,10 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(traineeModel.getPassword()))
                 .role(Role.TRAINEE)
                 .build();
+        TraineeEntity traineeEntity;
         userRepository.save(userEntity);
         try {
-            TraineeEntity traineeEntity = TraineeEntity.builder()
+             traineeEntity = TraineeEntity.builder()
                     .name(traineeModel.getName())
                     .gender(traineeModel.getGender())
                     .dateOfBirth(traineeModel.getDateOfBirth())
@@ -59,7 +64,7 @@ public class UserServiceImpl implements UserService {
             return new ResponseEntity<>("An error occurred", HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("id",traineeEntity.getTraineeId()));
     }
 
     @Override
@@ -103,31 +108,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<?> uploadPhoto(MultipartFile file, String role, Integer id) {
+
         if(role.equalsIgnoreCase("trainee")){
             TraineeEntity traineeEntity = traineeRepository.findById(id).get();
+            String filePath = directory+"\\main\\resources\\static\\TraineePhoto\\"+file.getOriginalFilename();
+
             traineeEntity.setTraineePhoto(file.getOriginalFilename());
             traineeEntity.setFileType(file.getContentType());
+            traineeEntity.setFilePath(filePath);
+
             try {
-
-                traineeEntity.setTraineeImage(ImageUtils.compressImage(file.getBytes()));
-
+                file.transferTo(new File(filePath));
             }
             catch (Exception e){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Image not found");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot save image");
             }
             traineeRepository.save(traineeEntity);
 
         } else if (role.equalsIgnoreCase("trainer")) {
             TrainerEntity trainerEntity = trainerRepository.findById(id).get();
+            String filePath = directory+"\\main\\resources\\static\\TrainerPhoto\\"+file.getOriginalFilename();
             trainerEntity.setTrainerPhoto(file.getOriginalFilename());
             trainerEntity.setFileType(file.getContentType());
+            trainerEntity.setFilePath(filePath);
             try{
-
-            trainerEntity.setTrainerImage(ImageUtils.compressImage(file.getBytes()));
-
+                file.transferTo(new File(filePath));
         }
             catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error with image!!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Couldn't save file");
         }
             trainerRepository.save(trainerEntity);
         }
@@ -143,9 +151,24 @@ public class UserServiceImpl implements UserService {
                 )
         );
         var user = userRepository.findByEmail(authenticationRequest.getEmail());
+        Integer id = 0;
+        if(user.getRole().toString().equals("TRAINEE")){
+            TraineeEntity traineeEntity = traineeRepository.findByTraineeEmail(user.getEmail());
+            id = traineeEntity.getTraineeId();
+        }
+        else if(user.getRole().toString().equals("TRAINER")){
+            TrainerEntity trainerEntity = trainerRepository.findByTrainerEmail(user.getEmail());
+            id = trainerEntity.getTrainerId();
+        }
+        else {
+            id = user.getUserId();
+        }
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .email(user.getEmail())
+                .role(user.getRole().toString())
+                .id(id)
                 .build();
     }
 

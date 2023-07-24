@@ -32,9 +32,7 @@ public class TraineeEntity {
     private Double cgpa;
     private Integer passingYear;
     private String address;
-    @Lob
-    @Column(name = "traineeImage")
-    private byte[] traineeImage;
+    private String filePath;
 
     @OneToOne
     @JoinColumn(name = "user_id")

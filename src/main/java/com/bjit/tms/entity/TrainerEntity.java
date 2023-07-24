@@ -29,9 +29,7 @@ public class TrainerEntity {
     private Double experience;
     private String expertise;
     private String trainerContactNo;
-    @Lob
-    @Column(name = "trainerImage", length = 1000)
-    private byte[] trainerImage;
+    private String filePath;
 
     @OneToOne
     @JoinColumn(name = "user_id")
