@@ -4,12 +4,11 @@ import com.bjit.tms.entity.Role;
 import com.bjit.tms.entity.TraineeEntity;
 import com.bjit.tms.entity.TrainerEntity;
 import com.bjit.tms.entity.UserEntity;
-import com.bjit.tms.model.*;
+import com.bjit.tms.model.user_models.*;
 import com.bjit.tms.repository.TraineeRepository;
 import com.bjit.tms.repository.TrainerRepository;
 import com.bjit.tms.repository.UserRepository;
 import com.bjit.tms.service.UserService;
-import com.bjit.tms.utils.ImageUtils;
 import com.bjit.tms.utils.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,7 +36,7 @@ public class UserServiceImpl implements UserService {
     private final String directory = System.getProperty("user.dir");
 
     @Override
-    public ResponseEntity<Object> traineeRegister(TraineeModel traineeModel){
+    public ResponseEntity<Object> traineeRegister(TraineeModel traineeModel) {
 
         UserEntity userEntity = UserEntity.builder()
                 .email(traineeModel.getTraineeEmail())
@@ -47,7 +46,7 @@ public class UserServiceImpl implements UserService {
         TraineeEntity traineeEntity;
         userRepository.save(userEntity);
         try {
-             traineeEntity = TraineeEntity.builder()
+            traineeEntity = TraineeEntity.builder()
                     .name(traineeModel.getName())
                     .gender(traineeModel.getGender())
                     .dateOfBirth(traineeModel.getDateOfBirth())
@@ -58,19 +57,19 @@ public class UserServiceImpl implements UserService {
                     .passingYear(traineeModel.getPassingYear())
                     .address(traineeModel.getAddress())
                     .user(userRepository.findIdByEmail(traineeModel.getTraineeEmail()))
+                    .assignedBatch(false)
                     .build();
 
             traineeRepository.save(traineeEntity);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>("An error occurred", HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("id",traineeEntity.getTraineeId()));
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("id", traineeEntity.getTraineeId()));
     }
 
     @Override
-    public ResponseEntity<Object> trainerRegister(TrainerModel trainerModel){
+    public ResponseEntity<Object> trainerRegister(TrainerModel trainerModel) {
 
         UserEntity userEntity = UserEntity.builder()
                 .email(trainerModel.getTrainerEmail())
@@ -93,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
         trainerRepository.save(trainerEntity);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("id", trainerEntity.getTrainerId()));
     }
 
     @Override
@@ -111,9 +110,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<?> uploadPhoto(MultipartFile file, String role, Integer id) {
 
-        if(role.equalsIgnoreCase("trainee")){
+        if (role.equalsIgnoreCase("trainee")) {
             TraineeEntity traineeEntity = traineeRepository.findById(id).get();
-            String filePath = directory+"\\main\\resources\\static\\TraineePhoto\\"+file.getOriginalFilename();
+            String filePath = directory + "\\main\\resources\\static\\TraineePhoto\\" + file.getOriginalFilename();
 
             traineeEntity.setTraineePhoto(file.getOriginalFilename());
             traineeEntity.setFileType(file.getContentType());
@@ -121,31 +120,29 @@ public class UserServiceImpl implements UserService {
 
             try {
                 file.transferTo(new File(filePath));
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot save image");
             }
             traineeRepository.save(traineeEntity);
 
         } else if (role.equalsIgnoreCase("trainer")) {
             TrainerEntity trainerEntity = trainerRepository.findById(id).get();
-            String filePath = directory+"\\main\\resources\\static\\TrainerPhoto\\"+file.getOriginalFilename();
+            String filePath = directory + "\\main\\resources\\static\\TrainerPhoto\\" + file.getOriginalFilename();
             trainerEntity.setTrainerPhoto(file.getOriginalFilename());
             trainerEntity.setFileType(file.getContentType());
             trainerEntity.setFilePath(filePath);
-            try{
+            try {
                 file.transferTo(new File(filePath));
-        }
-            catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Couldn't save file");
-        }
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Couldn't save file");
+            }
             trainerRepository.save(trainerEntity);
         }
         return ResponseEntity.status(HttpStatus.OK).body("Image Uploaded");
     }
 
     @Override
-    public AuthenticationResponse login(AuthenticationRequest authenticationRequest){
+    public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authenticationRequest.getEmail(),
@@ -154,15 +151,13 @@ public class UserServiceImpl implements UserService {
         );
         var user = userRepository.findByEmail(authenticationRequest.getEmail());
         Integer id = 0;
-        if(user.getRole().toString().equals("TRAINEE")){
+        if (user.getRole().toString().equals("TRAINEE")) {
             TraineeEntity traineeEntity = traineeRepository.findByTraineeEmail(user.getEmail());
             id = traineeEntity.getTraineeId();
-        }
-        else if(user.getRole().toString().equals("TRAINER")){
+        } else if (user.getRole().toString().equals("TRAINER")) {
             TrainerEntity trainerEntity = trainerRepository.findByTrainerEmail(user.getEmail());
             id = trainerEntity.getTrainerId();
-        }
-        else {
+        } else {
             id = user.getUserId();
         }
         var jwtToken = jwtService.generateToken(user);
@@ -175,7 +170,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity findByEmail(String email){
+    public UserEntity findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
@@ -183,11 +178,12 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<?> unassignedTrainees() {
         List<TraineeEntity> traineeEntityList = traineeRepository.findAll();
         List<String> unassignedTraineeList = new ArrayList<String>();
-        for(TraineeEntity traineeEntity : traineeEntityList){
-            if(traineeEntity.getAssignedBatch().equals("")){
+        for (TraineeEntity traineeEntity : traineeEntityList) {
+            if (!traineeEntity.isAssignedBatch()) {
                 unassignedTraineeList.add(traineeEntity.getName());
             }
         }
-        return ResponseEntity.status(HttpStatus.OK).body(unassignedTraineeList);
+        System.out.println(unassignedTraineeList);
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("unassignedList",unassignedTraineeList));
     }
 }

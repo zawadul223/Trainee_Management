@@ -1,4 +1,4 @@
-package com.bjit.tms.model;
+package com.bjit.tms.model.user_models;
 
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;

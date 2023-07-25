@@ -1,8 +1,7 @@
 package com.bjit.tms.controller;
 
-import com.bjit.tms.model.BatchDetailModel;
-import com.bjit.tms.model.CourseCreateModel;
-import com.bjit.tms.model.CourseScheduleModel;
+import com.bjit.tms.model.batch_models.CourseCreateModel;
+import com.bjit.tms.model.batch_models.CourseScheduleModel;
 import com.bjit.tms.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

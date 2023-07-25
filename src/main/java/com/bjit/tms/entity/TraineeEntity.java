@@ -33,7 +33,7 @@ public class TraineeEntity {
     private Integer passingYear;
     private String address;
     private String filePath;
-    private String assignedBatch;
+    private boolean assignedBatch;
 
     @OneToOne
     @JoinColumn(name = "user_id")

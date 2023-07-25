@@ -1,4 +1,4 @@
-package com.bjit.tms.model;
+package com.bjit.tms.model.assignment_models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,15 +7,16 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class PostListModel {
+public class AssignmentList {
 
-    private String trainerName;
+    private String courseName;
     private String message;
     private String file;
-    private Date date;
-
+    private Date createdDate;
+    private Date deadline;
+    private String assignmentCreator;
 }

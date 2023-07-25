@@ -1,10 +1,10 @@
 package com.bjit.tms.service.implementation;
 
 import com.bjit.tms.entity.*;
-import com.bjit.tms.model.AllSubmissions;
-import com.bjit.tms.model.AssignmentCreateModel;
-import com.bjit.tms.model.AssignmentList;
-import com.bjit.tms.model.AssignmentSubmitModel;
+import com.bjit.tms.model.assignment_models.AllSubmissions;
+import com.bjit.tms.model.assignment_models.AssignmentCreateModel;
+import com.bjit.tms.model.assignment_models.AssignmentList;
+import com.bjit.tms.model.assignment_models.AssignmentSubmitModel;
 import com.bjit.tms.repository.*;
 import com.bjit.tms.service.AssignmentService;
 import com.bjit.tms.utils.EntityCheck;

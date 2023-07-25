@@ -1,14 +1,13 @@
 package com.bjit.tms.service.implementation;
 
 import com.bjit.tms.entity.*;
-import com.bjit.tms.model.CommentListModel;
-import com.bjit.tms.model.CommentModel;
-import com.bjit.tms.model.PostListModel;
-import com.bjit.tms.model.PostModel;
+import com.bjit.tms.model.classroom_models.CommentListModel;
+import com.bjit.tms.model.classroom_models.CommentModel;
+import com.bjit.tms.model.classroom_models.PostListModel;
+import com.bjit.tms.model.classroom_models.PostModel;
 import com.bjit.tms.repository.*;
 import com.bjit.tms.service.ClassroomService;
 import com.bjit.tms.utils.EntityCheck;
-import com.bjit.tms.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.nio.file.Files;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,7 +36,7 @@ public class ClassroomServiceImpl implements ClassroomService {
     private final EntityCheck entityCheck;
     private final String folderPath = "E:\\Projects\\Final\\Files\\Post\\";
     @Override
-    public ResponseEntity<Object> createPost(Integer trainerId, PostModel postModel) {
+    public ResponseEntity<Object> createPost(Integer classroomId, Integer trainerId, PostModel postModel) {
 
         Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
         if (optionalTrainer.isEmpty()) {
@@ -46,7 +44,6 @@ public class ClassroomServiceImpl implements ClassroomService {
         }
         TrainerEntity trainerEntity = optionalTrainer.get();
 
-        Integer classroomId = postModel.getClassroomId();
         Optional<ClassroomEntity> optionalClassroom = classroomRepository.findById(classroomId);
         if (optionalClassroom.isEmpty()) {
             return new ResponseEntity<>("Classroom not found", HttpStatus.NOT_FOUND);
@@ -54,7 +51,7 @@ public class ClassroomServiceImpl implements ClassroomService {
         ClassroomEntity classroomEntity = optionalClassroom.get();
 
         ClassroomPostEntity classroomPostEntity = ClassroomPostEntity.builder()
-                .file(postModel.getFile())
+                //.file(postModel.getFile())
                 .message(postModel.getMessage())
                 .date(Date.valueOf(LocalDate.now()))
                 .build();
@@ -75,9 +72,9 @@ public class ClassroomServiceImpl implements ClassroomService {
         List<ClassroomPostEntity> posts = postRepository.findByClassroomEntity(classroomEntity);
         List<PostListModel> postListModels = new ArrayList<PostListModel>();
         for(ClassroomPostEntity i : posts){
-            PostListModel  p = PostListModel.builder()
+            PostListModel p = PostListModel.builder()
                     .trainerName(i.getTrainerEntity().getName())
-                    .file(i.getFile())
+                    //.file(i.getFile())
                     .message(i.getMessage())
                     .date(i.getDate())
                     .build();

@@ -1,4 +1,4 @@
-package com.bjit.tms.model;
+package com.bjit.tms.model.classroom_models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +11,11 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CommentListModel {
+public class PostListModel {
 
-    private String name;
-    private String comment;
+    private String trainerName;
+    private String message;
+    //private String file;
     private Date date;
+
 }

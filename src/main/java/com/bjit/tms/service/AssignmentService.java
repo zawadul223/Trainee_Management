@@ -1,11 +1,9 @@
 package com.bjit.tms.service;
 
-import com.bjit.tms.entity.AssignmentCreateEntity;
-import com.bjit.tms.entity.AssignmentSubmitEntity;
-import com.bjit.tms.model.AllSubmissions;
-import com.bjit.tms.model.AssignmentCreateModel;
-import com.bjit.tms.model.AssignmentList;
-import com.bjit.tms.model.AssignmentSubmitModel;
+import com.bjit.tms.model.assignment_models.AllSubmissions;
+import com.bjit.tms.model.assignment_models.AssignmentCreateModel;
+import com.bjit.tms.model.assignment_models.AssignmentList;
+import com.bjit.tms.model.assignment_models.AssignmentSubmitModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

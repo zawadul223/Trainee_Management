@@ -1,8 +1,8 @@
 package com.bjit.tms.service.implementation;
 
 import com.bjit.tms.entity.*;
-import com.bjit.tms.model.CourseCreateModel;
-import com.bjit.tms.model.CourseScheduleModel;
+import com.bjit.tms.model.batch_models.CourseCreateModel;
+import com.bjit.tms.model.batch_models.CourseScheduleModel;
 import com.bjit.tms.repository.*;
 import com.bjit.tms.service.CourseService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

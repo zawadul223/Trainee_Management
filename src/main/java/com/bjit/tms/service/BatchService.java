@@ -1,12 +1,13 @@
 package com.bjit.tms.service;
 
 import com.bjit.tms.entity.BatchEntity;
-import com.bjit.tms.model.*;
+import com.bjit.tms.model.batch_models.BatchCreateModel;
+import com.bjit.tms.model.batch_models.NoticeListModel;
+import com.bjit.tms.model.batch_models.NoticeModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public interface BatchService {

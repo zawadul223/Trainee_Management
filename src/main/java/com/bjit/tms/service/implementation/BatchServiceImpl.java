@@ -1,7 +1,7 @@
 package com.bjit.tms.service.implementation;
 
 import com.bjit.tms.entity.*;
-import com.bjit.tms.model.*;
+import com.bjit.tms.model.batch_models.*;
 import com.bjit.tms.repository.*;
 import com.bjit.tms.service.BatchService;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +61,7 @@ public class BatchServiceImpl implements BatchService {
 
         for (String name : traineeNames) {
             TraineeEntity traineeEntity = traineeRepository.findByName(name);
+            traineeEntity.setAssignedBatch(true);
             trainees.add(traineeEntity);
         }
         batchEntity.setTraineeEntityList(trainees);

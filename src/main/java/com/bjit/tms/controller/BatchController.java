@@ -1,14 +1,15 @@
 package com.bjit.tms.controller;
 
 import com.bjit.tms.entity.BatchEntity;
-import com.bjit.tms.model.*;
+import com.bjit.tms.model.batch_models.BatchCreateModel;
+import com.bjit.tms.model.batch_models.NoticeListModel;
+import com.bjit.tms.model.batch_models.NoticeModel;
 import com.bjit.tms.service.BatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/batch")

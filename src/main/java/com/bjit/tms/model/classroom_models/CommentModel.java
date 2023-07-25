@@ -1,4 +1,4 @@
-package com.bjit.tms.model;
+package com.bjit.tms.model.classroom_models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AuthenticationRequest {
-    private String email;
-    private String password;
+public class CommentModel {
+
+    private String comment;
+    private Integer postId;
 }

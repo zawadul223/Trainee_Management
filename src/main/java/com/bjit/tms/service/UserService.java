@@ -1,7 +1,7 @@
 package com.bjit.tms.service;
 
 import com.bjit.tms.entity.UserEntity;
-import com.bjit.tms.model.*;
+import com.bjit.tms.model.user_models.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

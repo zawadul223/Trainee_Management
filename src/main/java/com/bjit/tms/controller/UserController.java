@@ -1,13 +1,12 @@
 package com.bjit.tms.controller;
 
-import com.bjit.tms.model.AuthenticationRequest;
-import com.bjit.tms.model.TraineeModel;
-import com.bjit.tms.model.TrainerModel;
-import com.bjit.tms.model.UserModel;
+import com.bjit.tms.model.user_models.AuthenticationRequest;
+import com.bjit.tms.model.user_models.TraineeModel;
+import com.bjit.tms.model.user_models.TrainerModel;
+import com.bjit.tms.model.user_models.UserModel;
 import com.bjit.tms.repository.UserRepository;
 import com.bjit.tms.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

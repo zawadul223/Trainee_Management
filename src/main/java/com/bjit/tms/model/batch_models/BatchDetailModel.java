@@ -1,4 +1,4 @@
-package com.bjit.tms.model;
+package com.bjit.tms.model.batch_models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,9 +12,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseResponseModel {
-    private String courseName;
+public class BatchDetailModel {
+
+    private String batchName;
     private Date startDate;
     private Date endDate;
-    private List<String> trainerNames;
+    private List<String> traineeNames;
+    private List<CourseResponseModel> courses;
+    private List<NoticeListModel> notices;
 }

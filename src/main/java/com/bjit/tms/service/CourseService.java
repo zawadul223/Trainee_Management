@@ -1,7 +1,7 @@
 package com.bjit.tms.service;
 
-import com.bjit.tms.model.CourseCreateModel;
-import com.bjit.tms.model.CourseScheduleModel;
+import com.bjit.tms.model.batch_models.CourseCreateModel;
+import com.bjit.tms.model.batch_models.CourseScheduleModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

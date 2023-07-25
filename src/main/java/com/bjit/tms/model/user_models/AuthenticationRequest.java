@@ -1,17 +1,15 @@
-package com.bjit.tms.model;
+package com.bjit.tms.model.user_models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostModel {
-
-    private String message;
-    private String file;
-    private Integer classroomId;
+@Builder
+public class AuthenticationRequest {
+    private String email;
+    private String password;
 }

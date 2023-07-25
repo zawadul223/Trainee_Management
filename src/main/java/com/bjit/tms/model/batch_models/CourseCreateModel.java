@@ -1,4 +1,4 @@
-package com.bjit.tms.model;
+package com.bjit.tms.model.batch_models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
