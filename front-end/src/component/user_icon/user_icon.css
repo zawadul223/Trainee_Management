@@ -1,0 +1,22 @@
+#user-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 50px;
+    color: #fff;
+    background-color: #2f4050;
+  }
+  
+  #user-icon:hover {
+    background-color: #293846;
+  }
+  
+  #logout-dropdown {
+    position: absolute;
+    right: 60px;
+    top: 50px;
+    z-index: 1;
+  }
+  

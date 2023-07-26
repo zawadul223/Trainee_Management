@@ -1,0 +1,21 @@
+.notice-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .trainer-name {
+    font-weight: bold;
+  }
+  
+  .notice-time {
+    text-align: right;
+    font-style: italic;
+  }
+  
+  .notice-message {
+    margin-top: 10px;
+  }
+  
