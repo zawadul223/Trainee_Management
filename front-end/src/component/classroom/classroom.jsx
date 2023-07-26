@@ -69,13 +69,7 @@ const ClassroomPage = () => {
   return (
     <div>
       <h1>Classroom</h1>
-      {userRole !== 'TRAINEE' && (
-        <Button variant="primary" onClick={handleShowModal}>
-          Create Post
-        </Button>
-      )}
-      {/* Textarea for entering classroom ID (hidden for trainee) */}
-      {userRole !== 'TRAINEE' && (
+      {userRole === 'ADMIN' && (
         <Form.Group className="mt-3">
           <Form.Control
             type="text"
@@ -87,20 +81,11 @@ const ClassroomPage = () => {
       )}
 
       {/* Modal for creating a post */}
-      <Modal show={showModal} onHide={handleCloseModal}>
+      {/* <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Create Post</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Group controlId="classroomId">
-            <Form.Label>Classroom ID</Form.Label>
-            <Form.Control
-              type="text"
-              value={classroomId}
-              onChange={(e) => setClassroomId(e.target.value)}
-            />
-          </Form.Group>
-
           <Form.Group controlId="postMessage">
             <Form.Label>Post Message</Form.Label>
             <Form.Control
@@ -119,7 +104,7 @@ const ClassroomPage = () => {
             Create
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
 
       {/* Display posts */}
       {posts.map((post, index) => (

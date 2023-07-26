@@ -1,11 +1,15 @@
 package com.bjit.tms.service.implementation;
 
-import com.bjit.tms.entity.*;
+import com.bjit.tms.entity.batch_entities.BatchEntity;
+import com.bjit.tms.entity.user_entities.Role;
+import com.bjit.tms.entity.user_entities.TraineeEntity;
+import com.bjit.tms.entity.user_entities.TrainerEntity;
+import com.bjit.tms.entity.user_entities.UserEntity;
 import com.bjit.tms.model.user_models.*;
-import com.bjit.tms.repository.BatchRepository;
-import com.bjit.tms.repository.TraineeRepository;
-import com.bjit.tms.repository.TrainerRepository;
-import com.bjit.tms.repository.UserRepository;
+import com.bjit.tms.repository.batch_repositories.BatchRepository;
+import com.bjit.tms.repository.user_repositories.TraineeRepository;
+import com.bjit.tms.repository.user_repositories.TrainerRepository;
+import com.bjit.tms.repository.user_repositories.UserRepository;
 import com.bjit.tms.service.UserService;
 import com.bjit.tms.utils.EntityCheck;
 import com.bjit.tms.utils.JwtService;
@@ -22,7 +26,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

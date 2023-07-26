@@ -1,4 +1,4 @@
-package com.bjit.tms.entity;
+package com.bjit.tms.entity.user_entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

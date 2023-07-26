@@ -1,10 +1,10 @@
 package com.bjit.tms;
 
-import com.bjit.tms.entity.BatchEntity;
-import com.bjit.tms.entity.TraineeEntity;
+import com.bjit.tms.entity.batch_entities.BatchEntity;
+import com.bjit.tms.entity.user_entities.TraineeEntity;
 import com.bjit.tms.model.batch_models.BatchCreateModel;
-import com.bjit.tms.repository.BatchRepository;
-import com.bjit.tms.repository.TraineeRepository;
+import com.bjit.tms.repository.batch_repositories.BatchRepository;
+import com.bjit.tms.repository.user_repositories.TraineeRepository;
 import com.bjit.tms.service.implementation.BatchServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

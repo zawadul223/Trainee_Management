@@ -1,11 +1,19 @@
 package com.bjit.tms.service.implementation;
 
-import com.bjit.tms.entity.*;
+import com.bjit.tms.entity.classroom_entities.ClassroomEntity;
+import com.bjit.tms.entity.classroom_entities.ClassroomPostEntity;
+import com.bjit.tms.entity.classroom_entities.CommentEntity;
+import com.bjit.tms.entity.user_entities.TraineeEntity;
+import com.bjit.tms.entity.user_entities.TrainerEntity;
 import com.bjit.tms.model.classroom_models.CommentListModel;
 import com.bjit.tms.model.classroom_models.CommentModel;
 import com.bjit.tms.model.classroom_models.PostListModel;
 import com.bjit.tms.model.classroom_models.PostModel;
-import com.bjit.tms.repository.*;
+import com.bjit.tms.repository.classroom_repositories.ClassroomRepository;
+import com.bjit.tms.repository.classroom_repositories.CommentRepository;
+import com.bjit.tms.repository.classroom_repositories.PostRepository;
+import com.bjit.tms.repository.user_repositories.TraineeRepository;
+import com.bjit.tms.repository.user_repositories.TrainerRepository;
 import com.bjit.tms.service.ClassroomService;
 import com.bjit.tms.utils.EntityCheck;
 import lombok.RequiredArgsConstructor;
@@ -38,11 +46,16 @@ public class ClassroomServiceImpl implements ClassroomService {
     @Override
     public ResponseEntity<Object> createPost(Integer classroomId, Integer trainerId, PostModel postModel) {
 
-        Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
-        if (optionalTrainer.isEmpty()) {
-            return new ResponseEntity<>("Trainer not found", HttpStatus.NOT_FOUND);
+//        Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
+//        if (optionalTrainer.isEmpty()) {
+//            return new ResponseEntity<>("Trainer not found", HttpStatus.NOT_FOUND);
+//        }
+//        TrainerEntity trainerEntity = optionalTrainer.get();
+        if (entityCheck.checker("trainer", trainerId)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        TrainerEntity trainerEntity = optionalTrainer.get();
+
+        TrainerEntity trainerEntity = trainerRepository.findById(trainerId).get();
 
         Optional<ClassroomEntity> optionalClassroom = classroomRepository.findById(classroomId);
         if (optionalClassroom.isEmpty()) {
@@ -85,11 +98,11 @@ public class ClassroomServiceImpl implements ClassroomService {
     @Override
     public ResponseEntity<Object> createComment(Integer traineeId, CommentModel commentModel) {
 
-        Optional<TraineeEntity> optionalTrainee = traineeRepository.findById(traineeId);
-        if (optionalTrainee.isEmpty()) {
-            return new ResponseEntity<>("Trainee not found", HttpStatus.NOT_FOUND);
+        if (entityCheck.checker("trainee", traineeId)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        TraineeEntity traineeEntity = optionalTrainee.get();
+
+        TraineeEntity traineeEntity = traineeRepository.findById(traineeId).get();
 
         Integer postId = commentModel.getPostId();
         Optional<ClassroomPostEntity> optionalPost = postRepository.findById(postId);

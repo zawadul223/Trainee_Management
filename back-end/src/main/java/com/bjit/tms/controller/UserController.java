@@ -4,7 +4,7 @@ import com.bjit.tms.model.user_models.AuthenticationRequest;
 import com.bjit.tms.model.user_models.TraineeModel;
 import com.bjit.tms.model.user_models.TrainerModel;
 import com.bjit.tms.model.user_models.UserModel;
-import com.bjit.tms.repository.UserRepository;
+import com.bjit.tms.repository.user_repositories.UserRepository;
 import com.bjit.tms.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

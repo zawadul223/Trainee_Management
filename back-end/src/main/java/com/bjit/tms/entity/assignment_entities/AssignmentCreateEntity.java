@@ -1,13 +1,13 @@
-package com.bjit.tms.entity;
+package com.bjit.tms.entity.assignment_entities;
 
+import com.bjit.tms.entity.batch_entities.BatchEntity;
+import com.bjit.tms.entity.batch_entities.CourseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.sql.Date;
 

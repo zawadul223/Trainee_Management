@@ -1,10 +1,8 @@
-package com.bjit.tms.repository;
+package com.bjit.tms.repository.user_repositories;
 
-import com.bjit.tms.entity.TraineeEntity;
+import com.bjit.tms.entity.user_entities.TraineeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface TraineeRepository extends JpaRepository<TraineeEntity, Integer> {

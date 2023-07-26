@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, Form, Card } from 'react-bootstrap';
 
-const TrainerClassroomPage = ({ batches }) => {
+const TrainerClassroomPage = () => {
+  const [batches, setBatches] = useState([]);
+  const [selectedBatch, setSelectedBatch] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [classroomId, setClassroomId] = useState('');
   const [postMessage, setPostMessage] = useState('');
   const [posts, setPosts] = useState([]);
-
   const trainerId = localStorage.getItem('id');
+  const userRole = localStorage.getItem('role');
 
   const handleShowModal = () => {
     setShowModal(true);
@@ -22,7 +23,7 @@ const TrainerClassroomPage = ({ batches }) => {
       message: postMessage,
     };
 
-    fetch(`http://localhost:8080/classroom/post/${classroomId}/${trainerId}`, {
+    fetch(`http://localhost:8080/classroom/post/${selectedBatch}/${trainerId}`, {
       method: 'POST',
       crossDomain: true,
       headers: {
@@ -47,12 +48,20 @@ const TrainerClassroomPage = ({ batches }) => {
       });
   };
 
-  const fetchPosts = () => {
-    if (!classroomId) {
-      return;
-    }
+  const fetchBatches = () => {
+    fetch(`http://localhost:8080/user/trainer/getBatch/${trainerId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setBatches(data.batchIds);
+      })
+      .catch((error) => {
+        console.error('Error fetching trainer batches:', error);
+      });
+  };
 
-    fetch(`http://localhost:8080/classroom/allPosts/${classroomId}`)
+  const fetchBatchPosts = (batchId) => {
+    setSelectedBatch(batchId);
+    fetch(`http://localhost:8080/classroom/allPosts/${batchId}`)
       .then((response) => response.json())
       .then((data) => {
         setPosts(data);
@@ -64,29 +73,53 @@ const TrainerClassroomPage = ({ batches }) => {
   };
 
   useEffect(() => {
-    if (batches.length > 0) {
-      // Assuming the first batchId should be selected by default
-      setClassroomId(batches[0]);
-    }
-  }, [batches]);
+    fetchBatches();
+  }, []);
 
   useEffect(() => {
-    fetchPosts();
-  }, [classroomId]);
+    if (selectedBatch) {
+      fetchBatchPosts(selectedBatch);
+    }
+  }, [selectedBatch]);
 
   return (
     <div>
       <h1>Trainer Classroom</h1>
-      <Form.Group controlId="classroomId">
-        <Form.Label>Select Batch ID</Form.Label>
-        <Form.Control as="select" value={classroomId} onChange={(e) => setClassroomId(e.target.value)}>
-          {batches.map((batchId) => (
-            <option key={batchId} value={batchId}>
-              Batch {batchId}
-            </option>
-          ))}
-        </Form.Control>
-      </Form.Group>
+      {userRole === "TRAINER" && 
+      <>
+        <div>
+        {batches.map((batchId, index) => (
+          <div key={index}>
+            <button onClick={() => fetchBatchPosts(batchId)}>Batch {batchId}</button>
+          </div>
+        ))}
+      </div>
+
+      {/* Modal for creating a post */}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create Post</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group controlId="postMessage">
+            <Form.Label>Post Message</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={5}
+              value={postMessage}
+              onChange={(e) => setPostMessage(e.target.value)}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleCreatePost}>
+            Create
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       {/* Display posts */}
       {posts.map((post, index) => (
@@ -104,9 +137,8 @@ const TrainerClassroomPage = ({ batches }) => {
       <Button variant="primary" onClick={handleShowModal}>
         Create Post
       </Button>
-      <Modal show={showModal} onHide={handleCloseModal}>
-        {/* ... (existing code for modal, same as before) */}
-      </Modal>
+      </>}
+      
     </div>
   );
 };

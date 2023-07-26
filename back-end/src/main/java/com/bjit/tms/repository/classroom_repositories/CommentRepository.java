@@ -1,7 +1,7 @@
-package com.bjit.tms.repository;
+package com.bjit.tms.repository.classroom_repositories;
 
-import com.bjit.tms.entity.ClassroomPostEntity;
-import com.bjit.tms.entity.CommentEntity;
+import com.bjit.tms.entity.classroom_entities.ClassroomPostEntity;
+import com.bjit.tms.entity.classroom_entities.CommentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

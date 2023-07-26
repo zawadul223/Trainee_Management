@@ -1,4 +1,4 @@
-package com.bjit.tms.entity;
+package com.bjit.tms.entity.batch_entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

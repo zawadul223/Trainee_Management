@@ -1,12 +1,12 @@
 package com.bjit.tms.utils;
 
-import com.bjit.tms.entity.Role;
-import com.bjit.tms.entity.TraineeEntity;
-import com.bjit.tms.entity.TrainerEntity;
-import com.bjit.tms.entity.UserEntity;
-import com.bjit.tms.repository.TraineeRepository;
-import com.bjit.tms.repository.TrainerRepository;
-import com.bjit.tms.repository.UserRepository;
+import com.bjit.tms.entity.user_entities.Role;
+import com.bjit.tms.entity.user_entities.TraineeEntity;
+import com.bjit.tms.entity.user_entities.TrainerEntity;
+import com.bjit.tms.entity.user_entities.UserEntity;
+import com.bjit.tms.repository.user_repositories.TraineeRepository;
+import com.bjit.tms.repository.user_repositories.TrainerRepository;
+import com.bjit.tms.repository.user_repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

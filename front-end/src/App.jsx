@@ -12,7 +12,8 @@ import BatchDetails from './component/pages/batch_detail';
 import TraineeRegistrationPage from './component/pages/register_trainee';
 import TrainerRegistrationPage from './component/pages/register_trainer';
 import ClassroomPage from './component/classroom/classroom';
-
+import TrainerClassroomPage from './component/classroom/trainer_classroom_page';
+import TraineeClassroomPage from './component/classroom/trainee_classroom_page';
 
 function App() {
 
@@ -49,6 +50,8 @@ function App() {
               <Route path='/traineeRegister' element={<TraineeRegistrationPage />} />
               <Route path='/trainerRegister' element={<TrainerRegistrationPage />} />
               <Route path='/classroom' element={<ClassroomPage />}/>
+              <Route path='/trainerClassroom' element={<TrainerClassroomPage />} />
+              <Route path='/traineeClassroom' element={<TraineeClassroomPage />} />
             </>
           ) : (
             <>

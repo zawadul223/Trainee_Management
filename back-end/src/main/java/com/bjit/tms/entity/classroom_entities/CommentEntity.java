@@ -1,5 +1,6 @@
-package com.bjit.tms.entity;
+package com.bjit.tms.entity.classroom_entities;
 
+import com.bjit.tms.entity.user_entities.TraineeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

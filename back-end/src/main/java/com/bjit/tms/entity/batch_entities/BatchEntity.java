@@ -1,5 +1,8 @@
-package com.bjit.tms.entity;
+package com.bjit.tms.entity.batch_entities;
 
+import com.bjit.tms.entity.classroom_entities.ClassroomEntity;
+import com.bjit.tms.entity.user_entities.TraineeEntity;
+import com.bjit.tms.entity.user_entities.TrainerEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

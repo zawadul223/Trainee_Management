@@ -1,10 +1,17 @@
 package com.bjit.tms.service.implementation;
 
-import com.bjit.tms.entity.*;
+import com.bjit.tms.entity.batch_entities.BatchEntity;
+import com.bjit.tms.entity.batch_entities.CourseEntity;
+import com.bjit.tms.entity.batch_entities.CourseScheduleEntity;
+import com.bjit.tms.entity.user_entities.TrainerEntity;
 import com.bjit.tms.model.batch_models.CourseCreateModel;
 import com.bjit.tms.model.batch_models.CourseScheduleModel;
-import com.bjit.tms.repository.*;
+import com.bjit.tms.repository.batch_repositories.BatchRepository;
+import com.bjit.tms.repository.batch_repositories.CourseRepository;
+import com.bjit.tms.repository.batch_repositories.CourseSchduleRepository;
+import com.bjit.tms.repository.user_repositories.TrainerRepository;
 import com.bjit.tms.service.CourseService;
+import com.bjit.tms.utils.EntityCheck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +29,7 @@ public class CourseServiceImpl implements CourseService {
     private final BatchRepository batchRepository;
     private final TrainerRepository trainerRepository;
     private final CourseSchduleRepository courseSchduleRepository;
+    private final EntityCheck entityCheck;
 
     @Override
     public ResponseEntity<Object> createCourse(CourseCreateModel courseCreateModel) {
@@ -78,17 +86,18 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public ResponseEntity<Object> courseSchedule(CourseScheduleModel courseScheduleModel) {
         Integer trainerId = courseScheduleModel.getTrainerId();
-        Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
-        if (optionalTrainer.isEmpty()) {
-            return new ResponseEntity<>("Trainer not found", HttpStatus.NOT_FOUND);
+        if (entityCheck.checker("trainer", trainerId)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+
+        TrainerEntity trainerEntity = trainerRepository.findById(trainerId).get();
         Integer courseId = courseScheduleModel.getCourseId();
         Optional<CourseEntity> optionalCourse = courseRepository.findById(courseId);
         if (optionalCourse.isEmpty()) {
             return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
         }
 
-        TrainerEntity trainerEntity = optionalTrainer.get();
+//        TrainerEntity trainerEntity = optionalTrainer.get();
         CourseEntity courseEntity = optionalCourse.get();
 
         CourseScheduleEntity courseScheduleEntity = CourseScheduleEntity.builder()

@@ -1,18 +1,16 @@
 package com.bjit.tms.controller;
 
-import com.bjit.tms.entity.BatchEntity;
+import com.bjit.tms.entity.batch_entities.BatchEntity;
 import com.bjit.tms.model.batch_models.BatchCreateModel;
 import com.bjit.tms.model.batch_models.NoticeListModel;
 import com.bjit.tms.model.batch_models.NoticeModel;
-import com.bjit.tms.repository.BatchRepository;
+import com.bjit.tms.repository.batch_repositories.BatchRepository;
 import com.bjit.tms.service.BatchService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/batch")
@@ -38,7 +36,7 @@ public class BatchController {
     }
 
     @PostMapping("/assign/trainee/{batchId}")
-    public ResponseEntity<Object> assignTrainee(@PathVariable Integer batchId, @RequestBody List<String> trainees){
+    public ResponseEntity<Object> assignTrainee(@PathVariable Integer batchId, @RequestBody List<Integer> trainees){
         return batchService.assignTrainee(batchId, trainees);
     }
 
@@ -63,10 +61,8 @@ public class BatchController {
     }
 
     @GetMapping("/name/{batchId}")
-    public ResponseEntity<?> getBatchName(Integer id){
-        BatchEntity batchEntity = batchRepository.findById(id).get();
-        String name = batchEntity.getBatchName();
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("batchName", name));
+    public ResponseEntity<?> getBatchName(@PathVariable Integer batchId){
+        return batchService.batchName(batchId);
     }
 
 }

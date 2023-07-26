@@ -1,7 +1,7 @@
-package com.bjit.tms.repository;
+package com.bjit.tms.repository.assignment_repositories;
 
-import com.bjit.tms.entity.AssignmentCreateEntity;
-import com.bjit.tms.entity.BatchEntity;
+import com.bjit.tms.entity.assignment_entities.AssignmentCreateEntity;
+import com.bjit.tms.entity.batch_entities.BatchEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

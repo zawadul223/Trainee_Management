@@ -1,22 +1,19 @@
 package com.bjit.tms;
 
-import com.bjit.tms.entity.ClassroomEntity;
-import com.bjit.tms.entity.ClassroomPostEntity;
-import com.bjit.tms.entity.TrainerEntity;
+import com.bjit.tms.entity.classroom_entities.ClassroomEntity;
+import com.bjit.tms.entity.classroom_entities.ClassroomPostEntity;
+import com.bjit.tms.entity.user_entities.TrainerEntity;
 import com.bjit.tms.model.classroom_models.PostListModel;
 import com.bjit.tms.model.classroom_models.PostModel;
-import com.bjit.tms.repository.ClassroomRepository;
-import com.bjit.tms.repository.PostRepository;
-import com.bjit.tms.repository.TrainerRepository;
+import com.bjit.tms.repository.classroom_repositories.ClassroomRepository;
+import com.bjit.tms.repository.classroom_repositories.PostRepository;
+import com.bjit.tms.repository.user_repositories.TrainerRepository;
 import com.bjit.tms.service.implementation.ClassroomServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

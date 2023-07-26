@@ -1,13 +1,12 @@
-package com.bjit.tms.repository;
+package com.bjit.tms.repository.batch_repositories;
 
-import com.bjit.tms.entity.BatchEntity;
+import com.bjit.tms.entity.batch_entities.BatchEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface BatchRepository extends JpaRepository<BatchEntity, Integer> {

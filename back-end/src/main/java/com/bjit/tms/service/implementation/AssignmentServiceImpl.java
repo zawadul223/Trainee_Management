@@ -1,11 +1,21 @@
 package com.bjit.tms.service.implementation;
 
-import com.bjit.tms.entity.*;
+import com.bjit.tms.entity.assignment_entities.AssignmentCreateEntity;
+import com.bjit.tms.entity.assignment_entities.AssignmentSubmitEntity;
+import com.bjit.tms.entity.batch_entities.BatchEntity;
+import com.bjit.tms.entity.batch_entities.CourseEntity;
+import com.bjit.tms.entity.user_entities.TraineeEntity;
+import com.bjit.tms.entity.user_entities.TrainerEntity;
 import com.bjit.tms.model.assignment_models.AllSubmissions;
 import com.bjit.tms.model.assignment_models.AssignmentCreateModel;
 import com.bjit.tms.model.assignment_models.AssignmentList;
 import com.bjit.tms.model.assignment_models.AssignmentSubmitModel;
-import com.bjit.tms.repository.*;
+import com.bjit.tms.repository.assignment_repositories.AssignmentCreateRepository;
+import com.bjit.tms.repository.assignment_repositories.AssignmentSubmitRepository;
+import com.bjit.tms.repository.batch_repositories.BatchRepository;
+import com.bjit.tms.repository.batch_repositories.CourseRepository;
+import com.bjit.tms.repository.user_repositories.TraineeRepository;
+import com.bjit.tms.repository.user_repositories.TrainerRepository;
 import com.bjit.tms.service.AssignmentService;
 import com.bjit.tms.utils.EntityCheck;
 import lombok.RequiredArgsConstructor;
@@ -35,11 +45,11 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     public ResponseEntity<Object> createAssignment(Integer creatorId, AssignmentCreateModel assignmentCreateModel) {
 
-        Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(creatorId);
-        if (optionalTrainer.isEmpty()) {
-            return new ResponseEntity<>("Trainer not found", HttpStatus.NOT_FOUND);
+        if (entityCheck.checker("trainer", creatorId)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        TrainerEntity trainerEntity = optionalTrainer.get();
+
+        TrainerEntity trainerEntity = trainerRepository.findById(creatorId).get();
         String assignmentCreator = trainerEntity.getName();
 
         Integer courseId = assignmentCreateModel.getCourseId();
@@ -106,7 +116,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     public ResponseEntity<List<AssignmentList>> assignments(Integer batchId) {
 
-        if (!entityCheck.checker("batch", batchId)) {
+        if (entityCheck.checker("batch", batchId)) {
             return ResponseEntity.notFound().build();
         }
 
@@ -156,7 +166,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     public ResponseEntity<?> assignmentCreateFile(MultipartFile file, Integer assignmentCreateId) {
 
-        if (!entityCheck.checker("assignmentCreate", assignmentCreateId)){
+        if (entityCheck.checker("assignmentCreate", assignmentCreateId)){
             return ResponseEntity.notFound().build();
         }
         String filePath = folder_path+"\\Assignments\\"+file.getOriginalFilename();
