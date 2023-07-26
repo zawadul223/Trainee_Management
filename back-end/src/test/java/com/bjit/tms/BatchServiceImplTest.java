@@ -68,7 +68,7 @@ public class BatchServiceImplTest {
     @Test
     public void testAssignTrainee_Success() {
         int batchId = 1;
-        List<String> traineeNames = List.of("Trainee 1", "Trainee 2");
+        List<Integer> trainees = List.of(1, 2);
 
         BatchEntity batchEntity = BatchEntity.builder()
                 .batchId(batchId)
@@ -90,7 +90,7 @@ public class BatchServiceImplTest {
         when(traineeRepository.findByName("Trainee 1")).thenReturn(trainee1);
         when(traineeRepository.findByName("Trainee 2")).thenReturn(trainee2);
 
-        ResponseEntity<Object> response = batchService.assignTrainee(batchId, traineeNames);
+        ResponseEntity<Object> response = batchService.assignTrainee(batchId, trainees);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo("Assigned Successfully");
@@ -108,11 +108,11 @@ public class BatchServiceImplTest {
     @Test
     public void testAssignTrainee_BatchNotFound() {
         int batchId = 1;
-        List<String> traineeNames = List.of("Trainee 1", "Trainee 2");
+        List<Integer> trainees = List.of(1,2);
 
         when(batchRepository.findById(batchId)).thenReturn(Optional.empty());
 
-        ResponseEntity<Object> response = batchService.assignTrainee(batchId, traineeNames);
+        ResponseEntity<Object> response = batchService.assignTrainee(batchId, trainees);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(response.getBody()).isNull();
