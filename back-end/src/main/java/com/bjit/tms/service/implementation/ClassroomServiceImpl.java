@@ -71,7 +71,7 @@ public class ClassroomServiceImpl implements ClassroomService {
         classroomPostEntity.setTrainerEntity(trainerEntity);
         classroomPostEntity.setClassroomEntity(classroomEntity);
         postRepository.save(classroomPostEntity);
-        return new ResponseEntity<>("Post Created", HttpStatus.CREATED);
+        return new ResponseEntity<>("Post Created", HttpStatus.OK);
     }
 
     @Override

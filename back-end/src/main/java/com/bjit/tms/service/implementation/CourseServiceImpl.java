@@ -86,11 +86,16 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public ResponseEntity<Object> courseSchedule(CourseScheduleModel courseScheduleModel) {
         Integer trainerId = courseScheduleModel.getTrainerId();
-        if (entityCheck.checker("trainer", trainerId)){
+//        if (entityCheck.checker("trainer", trainerId)){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        }
+//
+//        TrainerEntity trainerEntity = trainerRepository.findById(trainerId).get();
+        Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
+        if(optionalTrainer.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
-        TrainerEntity trainerEntity = trainerRepository.findById(trainerId).get();
+        TrainerEntity trainerEntity = optionalTrainer.get();
         Integer courseId = courseScheduleModel.getCourseId();
         Optional<CourseEntity> optionalCourse = courseRepository.findById(courseId);
         if (optionalCourse.isEmpty()) {
