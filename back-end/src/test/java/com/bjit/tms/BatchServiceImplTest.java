@@ -7,6 +7,8 @@ import com.bjit.tms.repository.batch_repositories.BatchRepository;
 import com.bjit.tms.repository.user_repositories.TraineeRepository;
 import com.bjit.tms.service.implementation.BatchServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -47,80 +49,98 @@ public class BatchServiceImplTest {
                 .build();
     }
 
-    @Test
-    public void testBatchCreate_Success() {
-        BatchEntity savedBatch = BatchEntity.builder()
-                .batchId(1)
-                .batchName("Test Batch")
-                .startDate(Date.valueOf("2023-07-01"))
-                .endDate(Date.valueOf("2023-12-31"))
-                .build();
+    @Nested
+    @DisplayName("batchCreate() method")
+    class BatchCreateTests {
+        @Test
+        @DisplayName("When batch is created, should return success response with batch ID")
+        public void testBatchCreate_Success() {
+            // Arrange
+            BatchEntity savedBatch = BatchEntity.builder()
+                    .batchId(1)
+                    .batchName("Test Batch")
+                    .startDate(Date.valueOf("2023-07-01"))
+                    .endDate(Date.valueOf("2023-12-31"))
+                    .build();
 
-        when(batchRepository.save(any())).thenReturn(savedBatch);
+            when(batchRepository.save(any())).thenReturn(savedBatch);
 
-        ResponseEntity<Object> response = batchService.batchCreate(batchCreateModel);
+            // Act
+            ResponseEntity<Object> response = batchService.batchCreate(batchCreateModel);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(Map.of("success", true, "id", 1));
-        verify(batchRepository, times(1)).save(any());
+            // Assert
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+            assertThat(response.getBody()).isEqualTo(Map.of("success", true, "id", 1));
+            verify(batchRepository, times(1)).save(any());
+        }
     }
 
-    @Test
-    public void testAssignTrainee_Success() {
-        int batchId = 1;
-        List<String> traineeNames = List.of("Trainee 1", "Trainee 2");
+    @Nested
+    @DisplayName("assignTrainee() method")
+    class AssignTraineeTests {
+        @Test
+        @DisplayName("When batch exists and trainees are assigned, should return success response")
+        public void testAssignTrainee_Success() {
+            // Arrange
+            int batchId = 1;
+            List<Integer> traineeIds = List.of(1, 2);
 
-        BatchEntity batchEntity = BatchEntity.builder()
-                .batchId(batchId)
-                .batchName("Test Batch")
-                .startDate(Date.valueOf("2023-07-01"))
-                .endDate(Date.valueOf("2023-12-31"))
-                .build();
+            BatchEntity batchEntity = BatchEntity.builder()
+                    .batchId(batchId)
+                    .batchName("Test Batch")
+                    .startDate(Date.valueOf("2023-07-01"))
+                    .endDate(Date.valueOf("2023-12-31"))
+                    .build();
 
-        TraineeEntity trainee1 = TraineeEntity.builder()
-                .traineeId(1)
-                .name("Trainee 1")
-                .build();
-        TraineeEntity trainee2 = TraineeEntity.builder()
-                .traineeId(2)
-                .name("Trainee 2")
-                .build();
+            TraineeEntity trainee1 = TraineeEntity.builder()
+                    .traineeId(1)
+                    .name("Trainee 1")
+                    .build();
+            TraineeEntity trainee2 = TraineeEntity.builder()
+                    .traineeId(2)
+                    .name("Trainee 2")
+                    .build();
 
-        when(batchRepository.findById(batchId)).thenReturn(Optional.of(batchEntity));
-        when(traineeRepository.findByName("Trainee 1")).thenReturn(trainee1);
-        when(traineeRepository.findByName("Trainee 2")).thenReturn(trainee2);
+            when(batchRepository.findById(batchId)).thenReturn(Optional.of(batchEntity));
+            when(traineeRepository.findById(1)).thenReturn(Optional.of(trainee1));
+            when(traineeRepository.findById(2)).thenReturn(Optional.of(trainee2));
 
-        ResponseEntity<Object> response = batchService.assignTrainee(batchId, traineeNames);
+            // Act
+            ResponseEntity<Object> response = batchService.assignTrainee(batchId, traineeIds);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo("Assigned Successfully");
+            // Assert
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+            assertThat(response.getBody()).isEqualTo("Assigned Successfully");
 
-        assertThat(batchEntity.getTraineeEntityList()).containsExactlyInAnyOrder(trainee1, trainee2);
-        assertThat(trainee1.isAssignedBatch()).isTrue();
-        assertThat(trainee2.isAssignedBatch()).isTrue();
+            assertThat(batchEntity.getTraineeEntityList()).containsExactlyInAnyOrder(trainee1, trainee2);
+            assertThat(trainee1.isAssignedBatch()).isTrue();
+            assertThat(trainee2.isAssignedBatch()).isTrue();
 
-        verify(batchRepository, times(1)).findById(batchId);
-        verify(traineeRepository, times(1)).findByName("Trainee 1");
-        verify(traineeRepository, times(1)).findByName("Trainee 2");
-        verify(batchRepository, times(1)).save(batchEntity);
-    }
+            verify(batchRepository, times(1)).findById(batchId);
+            verify(traineeRepository, times(1)).findById(1);
+            verify(traineeRepository, times(1)).findById(2);
+            verify(batchRepository, times(1)).save(batchEntity);
+        }
 
-    @Test
-    public void testAssignTrainee_BatchNotFound() {
-        int batchId = 1;
-        List<String> traineeNames = List.of("Trainee 1", "Trainee 2");
+        @Test
+        @DisplayName("When batch does not exist, should return not found response")
+        public void testAssignTrainee_BatchNotFound() {
+            // Arrange
+            int batchId = 1;
+            List<Integer> traineeIds = List.of(1, 2);
 
-        when(batchRepository.findById(batchId)).thenReturn(Optional.empty());
+            when(batchRepository.findById(batchId)).thenReturn(Optional.empty());
 
-        ResponseEntity<Object> response = batchService.assignTrainee(batchId, traineeNames);
+            // Act
+            ResponseEntity<Object> response = batchService.assignTrainee(batchId, traineeIds);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-        assertThat(response.getBody()).isNull();
+            // Assert
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+            assertThat(response.getBody()).isNull();
 
-        verify(batchRepository, times(1)).findById(batchId);
-        verify(traineeRepository, never()).findByName(any());
-        verify(batchRepository, never()).save(any());
+            verify(batchRepository, times(1)).findById(batchId);
+            verify(traineeRepository, never()).findById(any());
+            verify(batchRepository, never()).save(any());
+        }
     }
 }
-
-

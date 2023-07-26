@@ -66,11 +66,16 @@ public class BatchServiceImpl implements BatchService {
     @Override
     public ResponseEntity<Object> assignTrainee(Integer batchId, List<Integer> trainee) {
 
-        if (entityCheck.checker("batch", batchId)) {
+//        if (entityCheck.checker("batch", batchId)) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        BatchEntity batchEntity = batchRepository.findById(batchId).get();
+        Optional<BatchEntity> optionalBatch = batchRepository.findById(batchId);
+        if(optionalBatch.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-
-        BatchEntity batchEntity = batchRepository.findById(batchId).get();
+        BatchEntity batchEntity = optionalBatch.get();
         List<TraineeEntity> trainees = new ArrayList<TraineeEntity>();
 
 //        for (String name : traineeNames) {
@@ -92,11 +97,16 @@ public class BatchServiceImpl implements BatchService {
     @Override
     public ResponseEntity<Object> assignTrainer(Integer batchId, List<Integer> trainerIds) {
 
-        if (entityCheck.checker("batch", batchId)) {
+//        if (entityCheck.checker("batch", batchId)) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        BatchEntity batchEntity = batchRepository.findById(batchId).get();
+        Optional<BatchEntity> optionalBatch = batchRepository.findById(batchId);
+        if(optionalBatch.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-
-        BatchEntity batchEntity = batchRepository.findById(batchId).get();
+        BatchEntity batchEntity = optionalBatch.get();
 
         List<TrainerEntity> trainers = trainerRepository.findAllById(trainerIds);
         batchEntity.setTrainerEntityList(trainers);
@@ -109,11 +119,16 @@ public class BatchServiceImpl implements BatchService {
     @Override
     public ResponseEntity<Object> createClassroom(Integer batchId) {
 
-        if (entityCheck.checker("batch", batchId)) {
+//        if (entityCheck.checker("batch", batchId)) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        BatchEntity batchEntity = batchRepository.findById(batchId).get();
+        Optional<BatchEntity> optionalBatch = batchRepository.findById(batchId);
+        if(optionalBatch.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-
-        BatchEntity batchEntity = batchRepository.findById(batchId).get();
+        BatchEntity batchEntity = optionalBatch.get();
 
         ClassroomEntity classroomEntity = ClassroomEntity.builder()
                 .batchEntity(batchEntity)
@@ -127,11 +142,16 @@ public class BatchServiceImpl implements BatchService {
 
     @Override
     public ResponseEntity<Object> getBatchInformation(Integer batchId) {
-        if (entityCheck.checker("batch", batchId)) {
+//        if (entityCheck.checker("batch", batchId)) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        BatchEntity batchEntity = batchRepository.findById(batchId).get();
+        Optional<BatchEntity> optionalBatch = batchRepository.findById(batchId);
+        if(optionalBatch.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-
-        BatchEntity batchEntity = batchRepository.findById(batchId).get();
+        BatchEntity batchEntity = optionalBatch.get();
 
         // Fetch trainee names for the batch
         List<String> traineeNames = batchEntity.getTraineeEntityList()
@@ -191,11 +211,16 @@ public class BatchServiceImpl implements BatchService {
     public ResponseEntity<Object> createNotice(Integer trainerId, NoticeModel noticeModel) {
 
         Integer batchId = noticeModel.getBatchId();
-        if (entityCheck.checker("batch", batchId)) {
+//        if (entityCheck.checker("batch", batchId)) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        BatchEntity batchEntity = batchRepository.findById(batchId).get();
+        Optional<BatchEntity> optionalBatch = batchRepository.findById(batchId);
+        if(optionalBatch.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-
-        BatchEntity batchEntity = batchRepository.findById(batchId).get();
+        BatchEntity batchEntity = optionalBatch.get();
 
         Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
         if (optionalTrainer.isEmpty()) {
@@ -216,11 +241,16 @@ public class BatchServiceImpl implements BatchService {
 
     @Override
     public ResponseEntity<List<NoticeListModel>> noticeList(Integer batchId) {
-        if (entityCheck.checker("batch", batchId)) {
+//        if (entityCheck.checker("batch", batchId)) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        BatchEntity batchEntity = batchRepository.findById(batchId).get();
+        Optional<BatchEntity> optionalBatch = batchRepository.findById(batchId);
+        if(optionalBatch.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-
-        BatchEntity batchEntity = batchRepository.findById(batchId).get();
+        BatchEntity batchEntity = optionalBatch.get();
 
         List<NoticeEntity> noticeEntity = noticeRepository.findNoticeEntitiesByBatchEntity(batchEntity);
         List<NoticeListModel> noticeListModels = new ArrayList<NoticeListModel>();

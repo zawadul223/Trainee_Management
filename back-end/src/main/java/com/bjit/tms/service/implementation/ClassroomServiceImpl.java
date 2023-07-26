@@ -46,16 +46,16 @@ public class ClassroomServiceImpl implements ClassroomService {
     @Override
     public ResponseEntity<Object> createPost(Integer classroomId, Integer trainerId, PostModel postModel) {
 
-//        Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
-//        if (optionalTrainer.isEmpty()) {
-//            return new ResponseEntity<>("Trainer not found", HttpStatus.NOT_FOUND);
-//        }
-//        TrainerEntity trainerEntity = optionalTrainer.get();
-        if (entityCheck.checker("trainer", trainerId)){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        Optional<TrainerEntity> optionalTrainer = trainerRepository.findById(trainerId);
+        if (optionalTrainer.isEmpty()) {
+            return new ResponseEntity<>("Trainer not found", HttpStatus.NOT_FOUND);
         }
-
-        TrainerEntity trainerEntity = trainerRepository.findById(trainerId).get();
+        TrainerEntity trainerEntity = optionalTrainer.get();
+//        if (entityCheck.checker("trainer", trainerId)){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        }
+//
+//        TrainerEntity trainerEntity = trainerRepository.findById(trainerId).get();
 
         Optional<ClassroomEntity> optionalClassroom = classroomRepository.findById(classroomId);
         if (optionalClassroom.isEmpty()) {
@@ -98,11 +98,16 @@ public class ClassroomServiceImpl implements ClassroomService {
     @Override
     public ResponseEntity<Object> createComment(Integer traineeId, CommentModel commentModel) {
 
-        if (entityCheck.checker("trainee", traineeId)){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        if (entityCheck.checker("trainee", traineeId)){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        }
+//
+//        TraineeEntity traineeEntity = traineeRepository.findById(traineeId).get();
+        Optional<TraineeEntity> optionalTrainee = traineeRepository.findById(traineeId);
+        if (optionalTrainee.isEmpty()) {
+            return new ResponseEntity<>("Trainee not found", HttpStatus.NOT_FOUND);
         }
-
-        TraineeEntity traineeEntity = traineeRepository.findById(traineeId).get();
+        TraineeEntity traineeEntity = optionalTrainee.get();
 
         Integer postId = commentModel.getPostId();
         Optional<ClassroomPostEntity> optionalPost = postRepository.findById(postId);
@@ -144,17 +149,17 @@ public class ClassroomServiceImpl implements ClassroomService {
 
     @Override
     public ResponseEntity<?> postFile(MultipartFile file, Integer postId) {
-//        Optional<ClassroomPostEntity> optionalClassroomPost = postRepository.findById(postId);
-//
-//        if(optionalClassroomPost.isEmpty()){
-//            return ResponseEntity.notFound().build();
-//        }
-//        ClassroomPostEntity classroomPostEntity = optionalClassroomPost.get();
-//        Optional<ClassroomPostEntity> optionalClassroomPost = postRepository.findById(postId);
-        if (entityCheck.checker("classroom", postId)){
+        Optional<ClassroomPostEntity> optionalClassroomPost = postRepository.findById(postId);
+
+        if(optionalClassroomPost.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        ClassroomPostEntity classroomPostEntity = postRepository.findById(postId).get();
+        ClassroomPostEntity classroomPostEntity = optionalClassroomPost.get();
+ //       Optional<ClassroomPostEntity> optionalClassroomPost = postRepository.findById(postId);
+//        if (entityCheck.checker("classroom", postId)){
+//            return ResponseEntity.notFound().build();
+//        }
+//        ClassroomPostEntity classroomPostEntity = postRepository.findById(postId).get();
         String filePath = folderPath + file.getOriginalFilename();
         classroomPostEntity.setFile(file.getOriginalFilename());
         classroomPostEntity.setFilePath(filePath);
