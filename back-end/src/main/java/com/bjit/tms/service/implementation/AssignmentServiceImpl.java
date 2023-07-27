@@ -166,11 +166,16 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     public ResponseEntity<?> assignmentCreateFile(MultipartFile file, Integer assignmentCreateId) {
 
-        if (entityCheck.checker("assignmentCreate", assignmentCreateId)){
+//        if (entityCheck.checker("assignmentCreate", assignmentCreateId)){
+//            return ResponseEntity.notFound().build();
+//        }
+        Optional<AssignmentCreateEntity> optionalAssignmentCreateEntity = assignmentCreateRepository.findById(assignmentCreateId);
+        if (optionalAssignmentCreateEntity.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        String filePath = folder_path+"\\Assignments\\"+file.getOriginalFilename();
-        AssignmentCreateEntity assignmentCreateEntity = assignmentCreateRepository.findById(assignmentCreateId).get();
+        //String filePath = folder_path+"\\Assignments\\"+file.getOriginalFilename();
+        String filePath = "D:\\Final Project\\tms\\back-end\\src\\main\\resources\\static\\AssignmentCreateFile\\"+file.getOriginalFilename();
+        AssignmentCreateEntity assignmentCreateEntity = optionalAssignmentCreateEntity.get();
         assignmentCreateEntity.setFile(file.getOriginalFilename());
         assignmentCreateEntity.setFilePath(filePath);
         try{
@@ -186,11 +191,16 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public ResponseEntity<?> assignmentSubmitFile(MultipartFile file, Integer assignmentSubmitId) {
-        if(entityCheck.checker("assignmentsubmit", assignmentSubmitId)){
+//        if(entityCheck.checker("assignmentsubmit", assignmentSubmitId)){
+//            return ResponseEntity.notFound().build();
+//        }
+        Optional<AssignmentSubmitEntity> optionalAssignmentSubmitEntity = assignmentSubmitRepository.findById(assignmentSubmitId);
+        if(optionalAssignmentSubmitEntity.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         AssignmentSubmitEntity assignmentSubmitEntity = assignmentSubmitRepository.findById(assignmentSubmitId).get();
-        String filePath = folder_path+"\\Submissions\\"+file.getOriginalFilename();
+        //String filePath = folder_path+"\\Submissions\\"+file.getOriginalFilename();
+        String filePath ="D:\\Final Project\\tms\\back-end\\src\\main\\resources\\static\\AssignmentSubmitFile\\"+file.getOriginalFilename();
         assignmentSubmitEntity.setFile(file.getOriginalFilename());
         assignmentSubmitEntity.setFileType(file.getContentType());
         assignmentSubmitEntity.setPathname(filePath);

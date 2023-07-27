@@ -8,6 +8,7 @@ import com.bjit.tms.service.AssignmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,6 +21,11 @@ public class AssignmentController {
     @PostMapping("/create/{trainerId}")
     public ResponseEntity<Object> assignmentCreate(@PathVariable Integer trainerId, @RequestBody AssignmentCreateModel assignmentCreateModel){
         return assignmentService.createAssignment(trainerId, assignmentCreateModel);
+    }
+
+    @PostMapping("/create/file/{assignmentId}")
+    public ResponseEntity<?> createFile(@RequestParam("file")MultipartFile multipartFile, @PathVariable Integer assignmentId){
+        return assignmentService.assignmentCreateFile(multipartFile, assignmentId);
     }
 
     @GetMapping("/list/{batchId}")
@@ -35,5 +41,10 @@ public class AssignmentController {
     @GetMapping("/submission/{assignmentId}")
     public ResponseEntity<List<AllSubmissions>> submissionList(@PathVariable Integer assignmentId){
         return assignmentService.submissions(assignmentId);
+    }
+
+    @PostMapping("/submit/file/{submissionId}")
+    public ResponseEntity<?> submitFile(@RequestParam("file")MultipartFile multipartFile, @PathVariable Integer submissionId){
+        return assignmentService.assignmentSubmitFile(multipartFile,submissionId);
     }
 }

@@ -160,7 +160,8 @@ public class ClassroomServiceImpl implements ClassroomService {
 //            return ResponseEntity.notFound().build();
 //        }
 //        ClassroomPostEntity classroomPostEntity = postRepository.findById(postId).get();
-        String filePath = folderPath + file.getOriginalFilename();
+        String filePath = "D:\\Final Project\\tms\\back-end\\src\\main\\resources\\static\\Classroom Post File\\" + file.getOriginalFilename();
+        //String filePath = folderPath +"ClassroomPostFile\\"+ file.getOriginalFilename();
         classroomPostEntity.setFile(file.getOriginalFilename());
         classroomPostEntity.setFilePath(filePath);
         classroomPostEntity.setFileType(file.getContentType());

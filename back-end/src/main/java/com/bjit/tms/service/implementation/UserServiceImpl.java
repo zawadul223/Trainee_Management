@@ -117,7 +117,8 @@ public class UserServiceImpl implements UserService {
 
         if (role.equalsIgnoreCase("trainee")) {
             TraineeEntity traineeEntity = traineeRepository.findById(id).get();
-            String filePath = directory + "\\main\\resources\\static\\TraineePhoto\\" + file.getOriginalFilename();
+            //String filePath = directory + "\\main\\resources\\static\\TraineePhoto\\" + file.getOriginalFilename();
+            String filePath ="D:\\Final Project\\tms\\back-end\\src\\main\\resources\\static\\TraineePhoto\\" + file.getOriginalFilename();
 
             traineeEntity.setTraineePhoto(file.getOriginalFilename());
             traineeEntity.setFileType(file.getContentType());
@@ -132,7 +133,8 @@ public class UserServiceImpl implements UserService {
 
         } else if (role.equalsIgnoreCase("trainer")) {
             TrainerEntity trainerEntity = trainerRepository.findById(id).get();
-            String filePath = directory + "\\main\\resources\\static\\TrainerPhoto\\" + file.getOriginalFilename();
+            //String filePath = directory + "\\main\\resources\\static\\TrainerPhoto\\" + file.getOriginalFilename();
+            String filePath ="D:\\Final Project\\tms\\back-end\\src\\main\\resources\\static\\TrainerPhoto\\" + file.getOriginalFilename();
             trainerEntity.setTrainerPhoto(file.getOriginalFilename());
             trainerEntity.setFileType(file.getContentType());
             trainerEntity.setFilePath(filePath);

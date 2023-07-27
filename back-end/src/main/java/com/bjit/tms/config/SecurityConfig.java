@@ -22,8 +22,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+
                 .cors()
-                .disable()
+                .and()
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
@@ -34,8 +35,8 @@ public class SecurityConfig {
 //                        "/batch/create", "/batch/classroom/create/{batchId}",
 //                        "/batch/all", "/batch/assign/trainee/{batchId}",
 //                        "/batch/notice/getNotices/{batchId}",
-//                        "/course/create", "/course/assign/batch",
-//                        "/course/schedule").hasAnyAuthority("ADMIN")
+//                        "/course/create", "/course/assign/batch", "/batch/notice/getNotices/{batchId}",
+//                        "/course/schedule","/user/unassigned/trainees", "/batch/details/${batchNumber}").hasAnyAuthority("ADMIN")
 //                .requestMatchers("/assignment/create/{trainerId}", "/assignment/list/{batchId}",
 //                        "/assignment/submission/{assignmentId}",
 //                        "/classroom/post/{trainerId}", "/classroom/allPosts/{classroomId}",
