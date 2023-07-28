@@ -14,10 +14,10 @@ export const SidebarData = [
         title: "Batch Detail",
         link: "/batch_detail"
     },
-    {
-        title: "Course",
-        link: "/course"
-    },
+    // {
+    //     title: "Course",
+    //     link: "/course"
+    // },
     {
         title: "Trainee Register",
         link: "/traineeRegister"

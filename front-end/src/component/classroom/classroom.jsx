@@ -21,7 +21,7 @@ const ClassroomPage = () => {
       message: postMessage,
     };
 
-    fetch(`localhost:8080/classroom/post/${classroomId}`, {
+    fetch(`http://localhost:8080/classroom/post/${classroomId}`, {
       method: 'POST',
       crossDomain: true,
       headers: {
@@ -51,7 +51,7 @@ const ClassroomPage = () => {
       return;
     }
 
-    fetch(`localhost:8080/classroom/allPosts/${classroomId}`)
+    fetch(`http://localhost:8080/classroom/allPosts/${classroomId}`)
       .then((response) => response.json())
       .then((data) => {
         setPosts(data);
